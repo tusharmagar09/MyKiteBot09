@@ -25,17 +25,17 @@ body {
 }
 
 .container {
-    max-width: 1400px;
+    max-width: 1600px;
     margin: 0 auto;
-    padding: 2rem;
+    padding: 1rem 1.5rem;
 }
 
 header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 2.5rem;
-    padding-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
     border-bottom: 1px solid var(--border);
 }
 
@@ -56,18 +56,20 @@ header {
 /* Metrics Grid */
 .metrics-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 2.5rem;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
 }
 
 .metric-card {
     background: var(--card-bg);
     backdrop-filter: blur(10px);
     border: 1px solid var(--border);
-    padding: 1.5rem;
-    border-radius: 16px;
+    padding: 1rem;
+    border-radius: 12px;
     transition: transform 0.2s ease, border-color 0.2s ease;
+    text-align: center;
+    min-width: 0;
 }
 
 .metric-card:hover {
@@ -84,8 +86,11 @@ header {
 }
 
 .metric-value {
-    font-size: 1.8rem;
+    font-size: 1.25rem;
     font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .positive { color: #3fb950; }
@@ -94,23 +99,25 @@ header {
 /* Charts Area */
 .charts-grid {
     display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 1.5rem;
-    margin-bottom: 2.5rem;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
 }
 
 .chart-container {
     background: var(--card-bg);
     border: 1px solid var(--border);
-    padding: 1.5rem;
-    border-radius: 16px;
-    min-height: 400px;
+    padding: 1rem;
+    border-radius: 12px;
+    height: 300px;
 }
 
 .chart-header {
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
     font-weight: 600;
+    font-size: 0.85rem;
     color: var(--text-secondary);
+    text-transform: capitalize;
 }
 
 /* Downloads Section */
@@ -169,16 +176,16 @@ table {
 th {
     background: rgba(255, 255, 255, 0.05);
     text-align: left;
-    padding: 1rem;
+    padding: 0.75rem;
     color: var(--text-secondary);
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     text-transform: uppercase;
 }
 
 td {
-    padding: 1rem;
+    padding: 0.75rem;
     border-top: 1px solid var(--border);
-    font-size: 0.9rem;
+    font-size: 0.8rem;
 }
 
 tr:hover {

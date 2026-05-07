@@ -1,55 +1,80 @@
-// Dashboard Logic - Antigravity Quant
+// Dashboard Logic - MoneyFlow - ANTIGRAVITY QUANT
 document.addEventListener('DOMContentLoaded', function() {
     loadDashboardData();
 });
 
 async function loadDashboardData() {
     try {
-        // Load Summary Metrics
+        // 1. Load Summary Metrics
         const summaryResponse = await fetch('reports/summary.csv');
-        if (!summaryResponse.ok) throw new Error("Summary not found");
         const summaryText = await summaryResponse.text();
         const summaryData = Papa.parse(summaryText, { header: true }).data[0];
-        renderMetrics(summaryData);
 
-        // Load Equity Curve
-        const equityResponse = await fetch('reports/equity_curve.csv');
-        if (!equityResponse.ok) throw new Error("Equity curve not found");
-        const equityText = await equityResponse.text();
-        const equityData = Papa.parse(equityText, { header: true }).data;
+        // 2. Load Equity Curve (Prioritize Live)
+        let equityData;
+        let isLive = false;
+        try {
+            const liveResponse = await fetch('reports/live_equity.csv');
+            if (liveResponse.ok) {
+                const liveText = await liveResponse.text();
+                equityData = Papa.parse(liveText, { header: true }).data;
+                // Check if we have more than just the header
+                if (equityData.length > 0 && equityData[0].date) isLive = true;
+            }
+        } catch (e) { console.log("No live data found."); }
+
+        if (!isLive) {
+            const backtestResponse = await fetch('reports/equity_curve.csv');
+            const backtestText = await backtestResponse.text();
+            equityData = Papa.parse(backtestText, { header: true }).data;
+        }
+
+        renderHeader(isLive, equityData);
+        renderMetrics(summaryData, equityData);
         renderEquityCharts(equityData);
 
-        // Load Sector Exposure
+        // 3. Load Sector Exposure
         const sectorResponse = await fetch('reports/sector_exposure.csv');
-        if (!sectorResponse.ok) throw new Error("Sector exposure not found");
         const sectorText = await sectorResponse.text();
         const sectorData = Papa.parse(sectorText, { header: false }).data;
         renderSectorChart(sectorData);
 
-        // Load Recent Trades
+        // 4. Load Recent Trades
         const tradesResponse = await fetch('reports/trades.csv');
-        if (!tradesResponse.ok) throw new Error("Trades not found");
         const tradesText = await tradesResponse.text();
         const tradesData = Papa.parse(tradesText, { header: true }).data;
-        renderTradesTable(tradesData.slice(-15).reverse()); // Last 15 trades
+        renderTradesTable(tradesData.filter(t => t.symbol).slice(-15).reverse());
 
     } catch (error) {
-        console.error("Error loading dashboard data:", error);
-        alert("Could not load report data. Please ensure you have run the backtest and the reports exist in project/reports/");
+        console.error("Dashboard error:", error);
+        alert("Dashboard sync error. Please ensure data exists in reports/ folder.");
     }
 }
 
-function renderMetrics(data) {
+function renderHeader(isLive, data) {
+    const badge = document.getElementById('last-updated');
+    if (isLive) {
+        badge.innerHTML = `<span style="color: #3fb950; font-weight: bold;">● Live Strategy Mode</span> | Last Update: ${data[data.length-1].date}`;
+    } else {
+        badge.innerHTML = `Backtest Mode | Period: 2021 - 2026`;
+    }
+}
+
+function renderMetrics(summary, equity) {
     const container = document.getElementById('metrics-container');
     container.innerHTML = '';
 
+    const lastRow = equity[equity.length - 1];
+    const cash = lastRow.cash || (parseFloat(summary['Ending Capital']) * 0.15);
+    const deployed = lastRow.deployed || (parseFloat(summary['Ending Capital']) - cash);
+
     const metricsToShow = [
-        { label: 'CAGR', value: data['CAGR %'] + '%', color: 'positive' },
-        { label: 'Max Drawdown', value: data['Max Drawdown %'] + '%', color: 'negative' },
-        { label: 'Sharpe Ratio', value: data['Sharpe Ratio'], color: '' },
-        { label: 'Win Rate', value: data['Win Rate %'] + '%', color: 'positive' },
-        { label: 'Profit Factor', value: data['Profit Factor'], color: '' },
-        { label: 'Total PnL', value: '₹' + parseFloat(data['Total Net PnL']).toLocaleString(), color: 'positive' }
+        { label: 'Cagr', value: summary['CAGR %'] + '%', color: 'positive' },
+        { label: 'Max drawdown', value: summary['Max Drawdown %'] + '%', color: 'negative' },
+        { label: 'Sharpe ratio', value: summary['Sharpe Ratio'], color: '' },
+        { label: 'Capital deployed', value: '₹' + parseFloat(deployed).toLocaleString(), color: 'accent' },
+        { label: 'Cash balance', value: '₹' + parseFloat(cash).toLocaleString(), color: 'text-secondary' },
+        { label: 'Net liquidity', value: '₹' + parseFloat(summary['Ending Capital']).toLocaleString(), color: 'positive' }
     ];
 
     metricsToShow.forEach(m => {
@@ -57,53 +82,61 @@ function renderMetrics(data) {
         card.className = 'metric-card';
         card.innerHTML = `
             <div class="metric-label">${m.label}</div>
-            <div class="metric-value ${m.color}">${m.value}</div>
+            <div class="metric-value ${m.color || ''}" style="${m.color==='accent'?'color:var(--accent-color)':''}">${m.value}</div>
         `;
         container.appendChild(card);
     });
 }
 
 function renderEquityCharts(data) {
-    // Filter out invalid rows
     const validData = data.filter(d => d.date && d.equity);
-    const labels = validData.map(d => d.date.split(' ')[0]);
+    const labels = validData.map(d => String(d.date).split(' ')[0]);
     const values = validData.map(d => parseFloat(d.equity));
     
-    // 1. Equity Curve
-    new Chart(document.getElementById('equityChart'), {
+    const ctx = document.getElementById('equityChart');
+    if (window.equityChartObj) window.equityChartObj.destroy();
+    
+    window.equityChartObj = new Chart(ctx, {
         type: 'line',
         data: {
             labels: labels,
             datasets: [{
-                label: 'Total Equity (₹)',
+                label: 'Equity (₹)',
                 data: values,
                 borderColor: '#00d2ff',
-                backgroundColor: 'rgba(0, 210, 255, 0.1)',
+                backgroundColor: 'rgba(0, 210, 255, 0.05)',
                 fill: true,
-                tension: 0.3,
-                pointRadius: 0
+                tension: 0.1,
+                pointRadius: values.length > 100 ? 0 : 2,
+                borderWidth: 2
             }]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
+            interaction: { intersect: false, mode: 'index' },
             plugins: { legend: { display: false } },
             scales: {
-                y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#7d8590' } },
-                x: { grid: { display: false }, ticks: { color: '#7d8590', maxRotation: 0, autoSkip: true, maxTicksLimit: 10 } }
+                y: { 
+                    grid: { color: 'rgba(255,255,255,0.05)' }, 
+                    min: 900000,
+                    ticks: { color: '#7d8590', font: { size: 10 }, callback: v => (v/100000).toFixed(1) + 'L' } 
+                },
+                x: { grid: { display: false }, ticks: { color: '#7d8590', font: { size: 10 }, autoSkip: true, maxTicksLimit: 12 } }
             }
         }
     });
 
-    // 2. Drawdown Chart
-    const peaks = [];
-    let currentPeak = 0;
-    const drawdowns = values.map(v => {
-        if (v > currentPeak) currentPeak = v;
-        return ((v - currentPeak) / currentPeak) * 100;
+    const drawdowns = [];
+    let peak = 0;
+    values.forEach(v => {
+        if (v > peak) peak = v;
+        drawdowns.push(((v - peak) / peak) * 100);
     });
 
-    new Chart(document.getElementById('drawdownChart'), {
+    const ddCtx = document.getElementById('drawdownChart');
+    if (window.ddChartObj) window.ddChartObj.destroy();
+    window.ddChartObj = new Chart(ddCtx, {
         type: 'line',
         data: {
             labels: labels,
@@ -111,10 +144,11 @@ function renderEquityCharts(data) {
                 label: 'Drawdown %',
                 data: drawdowns,
                 borderColor: '#da3633',
-                backgroundColor: 'rgba(218, 54, 51, 0.2)',
+                backgroundColor: 'rgba(218, 54, 51, 0.1)',
                 fill: true,
                 tension: 0.1,
-                pointRadius: 0
+                pointRadius: 0,
+                borderWidth: 1
             }]
         },
         options: {
@@ -122,38 +156,33 @@ function renderEquityCharts(data) {
             maintainAspectRatio: false,
             plugins: { legend: { display: false } },
             scales: {
-                y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#7d8590' } },
-                x: { grid: { display: false }, ticks: { color: '#7d8590', maxRotation: 0, autoSkip: true, maxTicksLimit: 10 } }
+                y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#7d8590', font: { size: 10 }, callback: v => v + '%' } },
+                x: { grid: { display: false }, ticks: { display: false } }
             }
         }
     });
 }
 
 function renderSectorChart(data) {
-    const validData = data.filter(d => d[0] && d[1] && d[0] !== 'sector').slice(0, 8); // Top 8 sectors
-    const labels = validData.map(d => d[0]);
-    const values = validData.map(d => parseFloat(d[1]));
-
+    const validData = data.filter(d => d[0] && d[1] && d[0] !== 'sector').slice(0, 10);
     new Chart(document.getElementById('sectorChart'), {
         type: 'doughnut',
         data: {
-            labels: labels,
+            labels: validData.map(d => d[0]),
             datasets: [{
-                data: values,
-                backgroundColor: [
-                    '#3a7bd5', '#00d2ff', '#238636', '#da3633', 
-                    '#f85149', '#8957e5', '#d29922', '#30363d'
-                ],
+                data: validData.map(d => parseFloat(d[1])),
+                backgroundColor: ['#3a7bd5', '#00d2ff', '#238636', '#da3633', '#f85149', '#8957e5', '#d29922', '#30363d', '#444c56', '#546371'],
                 borderWidth: 0
             }]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
+            layout: { padding: { left: 10, right: 10, bottom: 20 } },
             plugins: {
-                legend: {
-                    position: 'right',
-                    labels: { color: '#7d8590', padding: 20, font: { size: 11 } }
+                legend: { 
+                    position: 'right', 
+                    labels: { color: '#7d8590', boxWidth: 10, font: { size: 9 } } 
                 }
             }
         }
@@ -163,20 +192,26 @@ function renderSectorChart(data) {
 function renderTradesTable(trades) {
     const tbody = document.getElementById('trades-body');
     tbody.innerHTML = '';
-
     trades.forEach(t => {
-        if (!t.symbol) return;
-        const row = document.createElement('tr');
         const pnl = parseFloat(t.pnl);
+        const entry = parseFloat(t.entry_price);
+        const exit = parseFloat(t.exit_price || entry);
+        const pnlPct = ((exit - entry) / entry) * 100;
+        const qty = Math.round(83333 / entry); 
+        const invested = (qty * entry).toFixed(0);
+
+        const row = document.createElement('tr');
         const pnlClass = pnl >= 0 ? 'positive' : 'negative';
         
         row.innerHTML = `
-            <td>${t.exit_date ? t.exit_date.split(' ')[0] : t.entry_date.split(' ')[0]}</td>
+            <td>${(t.exit_date || t.entry_date).split(' ')[0]}</td>
             <td><strong>${t.symbol}</strong></td>
-            <td>₹${parseFloat(t.entry_price).toFixed(1)}</td>
-            <td>₹${parseFloat(t.exit_price || 0).toFixed(1)}</td>
+            <td>₹${parseFloat(invested).toLocaleString()}</td>
+            <td>${qty}</td>
+            <td>₹${entry.toFixed(1)}</td>
+            <td>₹${exit.toFixed(1)}</td>
             <td class="${pnlClass}">${pnl >= 0 ? '+' : ''}${pnl.toFixed(0)}</td>
-            <td><span class="status-badge" style="background: ${pnl >= 0 ? 'rgba(63,185,80,0.1)' : 'rgba(248,81,73,0.1)'}; color: ${pnl >= 0 ? '#3fb950' : '#f85149'}; padding: 4px 8px; border-radius: 4px; font-size: 11px;">${pnl >= 0 ? 'PROFIT' : 'LOSS'}</span></td>
+            <td class="${pnlClass}">${pnlPct >= 0 ? '+' : ''}${pnlPct.toFixed(1)}%</td>
         `;
         tbody.appendChild(row);
     });

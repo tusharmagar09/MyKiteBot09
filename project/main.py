@@ -224,6 +224,8 @@ def main():
         equity_curve.append({
             "date": current_date,
             "equity": total_equity,
+            "cash": round(capital, 2),
+            "deployed": round(total_equity - capital, 2),
             "positions_count": len(current_portfolio),
             "holdings": [t['symbol'] for t in current_portfolio]
         })

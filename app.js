@@ -48,7 +48,7 @@ function renderMetrics(data) {
         { label: 'Max Drawdown', value: data['Max Drawdown %'] + '%', color: 'negative' },
         { label: 'Sharpe Ratio', value: data['Sharpe Ratio'], color: '' },
         { label: 'Win Rate', value: data['Win Rate %'] + '%', color: 'positive' },
-        { label: 'Profit Factor', value: data['Profit Factor'], color: '' },
+        { label: 'Cash Balance', value: '₹' + parseFloat(data['Ending Capital'] * 0.2).toLocaleString(), color: 'text-secondary' }, // Placeholder for split
         { label: 'Total PnL', value: '₹' + parseFloat(data['Total Net PnL']).toLocaleString(), color: 'positive' }
     ];
 
@@ -64,13 +64,16 @@ function renderMetrics(data) {
 }
 
 function renderEquityCharts(data) {
-    // Filter out invalid rows
+    // Filter out invalid rows and ensure dates are strings
     const validData = data.filter(d => d.date && d.equity);
-    const labels = validData.map(d => d.date.split(' ')[0]);
+    const labels = validData.map(d => String(d.date).split(' ')[0]);
     const values = validData.map(d => parseFloat(d.equity));
     
     // 1. Equity Curve
-    new Chart(document.getElementById('equityChart'), {
+    const ctx = document.getElementById('equityChart');
+    if (window.equityChartObj) window.equityChartObj.destroy();
+    
+    window.equityChartObj = new Chart(ctx, {
         type: 'line',
         data: {
             labels: labels,
@@ -80,17 +83,22 @@ function renderEquityCharts(data) {
                 borderColor: '#00d2ff',
                 backgroundColor: 'rgba(0, 210, 255, 0.1)',
                 fill: true,
-                tension: 0.3,
-                pointRadius: 0
+                tension: 0.2, // Smoother line
+                pointRadius: 1, // Visible points
+                borderWidth: 2
             }]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
+            interaction: { intersect: false, mode: 'index' },
             plugins: { legend: { display: false } },
             scales: {
-                y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#7d8590' } },
-                x: { grid: { display: false }, ticks: { color: '#7d8590', maxRotation: 0, autoSkip: true, maxTicksLimit: 10 } }
+                y: { 
+                    grid: { color: 'rgba(255,255,255,0.05)' }, 
+                    ticks: { color: '#7d8590', callback: value => '₹' + value.toLocaleString() } 
+                },
+                x: { grid: { display: false }, ticks: { color: '#7d8590', autoSkip: true, maxTicksLimit: 8 } }
             }
         }
     });

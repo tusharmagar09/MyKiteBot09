@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Antigravity | Quant Performance Dashboard</title>
+    <title>MoneyFlow - Antigravity Quant</title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,21 +15,18 @@
     <div class="container">
         <header>
             <div class="logo-area">
-                <h1>ANTIGRAVITY QUANT</h1>
+                <h1>MoneyFlow - Antigravity Quant</h1>
                 <p>Institutional Strategy Analytics • NIFTY 500 Universe</p>
             </div>
             <div class="status-badge" id="last-updated">
-                Backtest Period: 2021 - 2026
+                Initializing System...
             </div>
         </header>
 
         <!-- Metrics Overview -->
         <div class="metrics-grid" id="metrics-container">
             <!-- Metrics will be injected by JS -->
-            <div class="metric-card">
-                <div class="metric-label">Loading...</div>
-                <div class="metric-value">--</div>
-            </div>
+            <div class="metric-card"><div class="metric-label">Loading...</div></div>
         </div>
 
         <!-- Charts Section -->
@@ -40,7 +37,9 @@
             </div>
             <div class="chart-container">
                 <div class="chart-header">Sector Concentration (%)</div>
-                <canvas id="sectorChart"></canvas>
+                <div style="height: 240px; margin-top: 10px;">
+                    <canvas id="sectorChart"></canvas>
+                </div>
             </div>
         </div>
 
@@ -52,22 +51,17 @@
             <div class="chart-container">
                 <div class="chart-header">Report Actions</div>
                 <div class="downloads-area">
-                    <a href="reports/trades.csv" class="btn-download" download>Download Trades Log</a>
-                    <a href="reports/summary.csv" class="btn-download btn-outline" download>Download Summary</a>
-                    <a href="reports/rejected_signals.csv" class="btn-download btn-outline" download>Rejected Signals</a>
+                    <a href="reports/trades.csv" class="btn-download" download>Trades Log</a>
+                    <a href="reports/summary.csv" class="btn-download btn-outline" download>Summary</a>
+                    <a href="reports/rejected_signals.csv" class="btn-download btn-outline" download>Rejections</a>
                 </div>
-                <div style="margin-top: 2rem; color: var(--text-secondary); font-size: 0.85rem;">
-                    <p>⚡ <strong>Strategy Logic:</strong></p>
-                    <ul style="margin-left: 1.2rem; margin-top: 0.5rem;">
-                        <li>Volume Breakout Filter (1.5x)</li>
-                        <li>RS-Based Leader Replacement</li>
-                        <li>12 Slot Parallel Execution</li>
-                    </ul>
+                <div style="margin-top: 1rem; color: var(--text-secondary); font-size: 0.8rem;">
+                    <p>⚡ <strong>Strategy Engine:</strong> 12 Parallel Slots | RS leader replacement | Volume filter 1.5x</p>
                 </div>
             </div>
         </div>
 
-        <!-- Recent Trades Table -->
+        <!-- Recent Performance Table -->
         <div class="chart-header">Recent Performance Activity</div>
         <div class="table-container">
             <table id="trades-table">
@@ -75,14 +69,16 @@
                     <tr>
                         <th>Date</th>
                         <th>Symbol</th>
-                        <th>Entry</th>
-                        <th>Exit</th>
-                        <th>PnL</th>
-                        <th>Status</th>
+                        <th>Invested</th>
+                        <th>Qty</th>
+                        <th>Entry Price</th>
+                        <th>Exit Price</th>
+                        <th>PnL (Abs)</th>
+                        <th>Profit %</th>
                     </tr>
                 </thead>
                 <tbody id="trades-body">
-                    <!-- Trades will be injected by JS -->
+                    <!-- Trades injected by JS -->
                 </tbody>
             </table>
         </div>

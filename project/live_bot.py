@@ -505,12 +505,28 @@ def run(dry_run=False):
         state.save_state(current_portfolio, capital)
         state.cleanup_old_backups()
 
-        # ── Step 10: Daily Summary ──
-        logger.info("Step 10: Sending daily summary...")
+        # ── Step 10: Daily Summary & Report Update ──
+        logger.info("Step 10: Sending daily summary & updating live report...")
         total_equity = capital + sum(
             t['qty'] * price_data[t['symbol']]['close'].iloc[-1]
             for t in current_portfolio if t['symbol'] in price_data
         )
+        
+        # Update live performance log for dashboard
+        live_report_path = os.path.join(config.REPORT_DIR, "live_equity.csv")
+        new_row = pd.DataFrame([{
+            "date": current_date.strftime("%Y-%m-%d"),
+            "equity": round(total_equity, 2),
+            "cash": round(capital, 2),
+            "deployed": round(total_equity - capital, 2),
+            "positions_count": len(current_portfolio)
+        }])
+        
+        if not os.path.exists(live_report_path):
+            new_row.to_csv(live_report_path, index=False)
+        else:
+            new_row.to_csv(live_report_path, mode='a', header=False, index=False)
+
         notifications.send_daily_summary(entries_today, exits_today, current_portfolio, capital, total_equity)
 
         logger.info(f"Run complete: {len(entries_today)} entries, {len(exits_today)} exits, Equity={total_equity:,.2f}")
