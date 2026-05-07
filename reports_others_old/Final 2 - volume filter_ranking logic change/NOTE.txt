@@ -1,0 +1,30 @@
+Listed directory reports
+Viewed summary.csv:1-3
+Viewed trades.csv:1-254
+
+I have prepared the final backtest reports for you. You can access the detailed CSV files directly below.
+
+### 📈 Strategy Performance Summary
+The new **Volume Breakout** condition and **RS-Ranking** architecture have significantly improved the win rate to over **64%**.
+
+| Metric | Result |
+| :--- | :--- |
+| **Total Trades** | 252 |
+| **Win Rate %** | **64.68%** |
+| **Starting Capital** | ₹10,00,000 |
+| **Ending Capital** | **₹21,31,472** |
+| **Total Net PnL** | **₹11,31,472** |
+| **CAGR (Annualized)** | **19.66%** |
+| **Max Drawdown** | **-8.17%** |
+
+### 📂 Report Files
+You can view or download the full data from these local files:
+*   [📊 Full Trade Log (trades.csv)](file:///c:/Users/Ashish/.gemini/antigravity/scratch/MyKiteBot09/project/reports/trades.csv) — *Every entry, exit, and PnL for 252 trades.*
+*   [📈 Equity Curve (equity_curve.csv)](file:///c:/Users/Ashish/.gemini/antigravity/scratch/MyKiteBot09/project/reports/equity_curve.csv) — *Daily account balance over the 5-year period.*
+*   [📝 Summary Report (summary.csv)](file:///c:/Users/Ashish/.gemini/antigravity/scratch/MyKiteBot09/project/reports/summary.csv) — *The key performance metrics.*
+
+### 🛠️ Strategic Changes Applied:
+1.  **Volume Filter:** Only enters if the current week's volume is $\geq$ 1.5x the 20-week average.
+2.  **Architectural Shift:** Now scans **all 500 stocks** for technical signals first, then picks the strongest ones based on RS ranking (previously, it only looked at the top 30% RS stocks).
+
+**Does this performance meet your expectations? If so, I can proceed to update the live trading bot with this new logic.**

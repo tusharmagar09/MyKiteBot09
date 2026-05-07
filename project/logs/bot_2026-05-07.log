@@ -1,0 +1,16 @@
+2026-05-07 18:38:55,723 [live_bot] INFO: ============================================================
+2026-05-07 18:38:55,725 [live_bot] INFO: LIVE TRADING BOT STARTED
+2026-05-07 18:38:55,725 [live_bot] INFO: ============================================================
+2026-05-07 18:38:55,725 [live_bot] INFO: Step 1: Auto-login to Kite...
+2026-05-07 18:38:55,725 [auto_login] INFO: Logging in as MQ2273...
+2026-05-07 18:38:55,818 [auto_login] INFO: Step 1/4: Login successful.
+2026-05-07 18:38:55,818 [auto_login] INFO: Generated TOTP code: 741751
+2026-05-07 18:38:55,818 [auto_login] INFO: Trying 2FA type: 'totp'...
+2026-05-07 18:38:55,851 [auto_login] INFO: Step 2/4: Two-factor auth successful (type='totp').
+2026-05-07 18:38:55,852 [auto_login] INFO: Following redirect chain to get request_token...
+2026-05-07 18:38:55,978 [auto_login] INFO: Step 3/4: Got request_token.
+2026-05-07 18:38:56,058 [auto_login] INFO: Step 4/4: Access token generated and saved.
+2026-05-07 18:38:56,832 [live_bot] INFO: Step 2: Checking if market is open...
+2026-05-07 18:38:56,832 [live_bot] INFO: Current IST time: 2026-05-07 18:38:56 IST
+2026-05-07 18:38:56,833 [live_bot] INFO: Market is closed. Reason: After market hours (IST: 18:38). Exiting.
+2026-05-07 18:38:57,451 [live_bot] INFO: [DRY RUN] Would shutdown EC2 now.

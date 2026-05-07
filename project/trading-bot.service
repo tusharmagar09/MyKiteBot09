@@ -1,0 +1,24 @@
+[Unit]
+Description=Live Trading Bot - Institutional Strategy
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=ubuntu
+ExecStart=/usr/bin/python3 /home/ubuntu/project/live_bot.py
+WorkingDirectory=/home/ubuntu/project
+Restart=on-failure
+RestartSec=30
+StandardOutput=journal+console
+StandardError=journal+console
+
+# Environment
+EnvironmentFile=/home/ubuntu/project/.env
+
+# Resource limits
+TimeoutStartSec=600
+TimeoutStopSec=30
+
+[Install]
+WantedBy=multi-user.target

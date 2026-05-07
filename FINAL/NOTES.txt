@@ -1,0 +1,29 @@
+Edited config.py
+Edited main.py
+Ran command: `python -u project/main.py`
+
+The combination of **increasing slots to 12** and adding the **RS Replacement Logic** has pushed the strategy to its best performance yet!
+
+### 📈 Final Optimized Strategy Performance
+This version is now yielding an annual return of nearly **24%** while actually *reducing* the maximum drawdown slightly.
+
+| Metric | Previous (v5) | **Advanced (v6)** | Change |
+| :--- | :--- | :--- | :--- |
+| **Ending Capital** | ₹22,61,330 | **₹24,62,634** | **+ ₹2.0L** |
+| **CAGR (Annualized)** | 21.31% | **23.78%** | **+ 2.47%** |
+| **Total Trades** | 261 | 308 | + 47 |
+| **Avg Open Positions** | 4.2 | 4.68 | + 0.48 |
+| **Max Drawdown %** | -8.74% | **-8.69%** | **- 0.05%** |
+
+### 🛠️ What did the "Replacement Logic" do?
+Previously, if you already had 10 stocks and a new, much stronger stock (higher RS) appeared, the bot would ignore it. Now:
+1.  It checks the **current RS** of all 12 stocks in your portfolio daily.
+2.  If a new signal appears that is **significantly stronger** (> 0.20 RS gap) than your weakest holding, it **automatically sells the weak stock** and buys the new leader.
+3.  This resulted in 47 additional trades that were higher-quality leaders, boosting the overall CAGR.
+
+### 📂 Updated Detailed Reports
+*   [📊 Full Trade Log (trades.csv)](file:///c:/Users/Ashish/.gemini/antigravity/scratch/MyKiteBot09/project/reports/trades.csv) — *Look for "RS replacement" in the exit reasons.*
+*   [📝 Summary Metrics (summary.csv)](file:///c:/Users/Ashish/.gemini/antigravity/scratch/MyKiteBot09/project/reports/summary.csv)
+*   [🏗️ Sector Concentration (sector_exposure.csv)](file:///c:/Users/Ashish/.gemini/antigravity/scratch/MyKiteBot09/project/reports/sector_exposure.csv)
+
+**The strategy is now highly efficient. Are you ready to deploy these final logic changes (12 slots + Replacement Logic) to your live AWS bot?**
