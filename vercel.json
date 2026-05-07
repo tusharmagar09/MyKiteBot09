@@ -1,6 +1,7 @@
 {
     "name": "Antigravity Quant",
     "framework": null,
+    "cleanUrls": true,
     "rewrites": [
         { "source": "/", "destination": "/index.html" }
     ]
