@@ -9,8 +9,13 @@ IST_MINUTE=$(date -u -d "+5 hours 30 minutes" +%M)
 echo "Current IST Time: $IST_HOUR:$IST_MINUTE"
 
 # 2. Path to project
-PROJECT_DIR="/home/ubuntu/MyKiteBot09/project"
+PROJECT_DIR="/home/ubuntu/MyKiteBot09"
 cd $PROJECT_DIR
+
+# 3. Synchronize with latest logic
+echo "Updating code from GitHub..."
+git pull
+cd project
 
 # 3. Determine which module to run
 if [ "$IST_HOUR" -eq 9 ]; then
