@@ -82,22 +82,27 @@ def check_market_status(kite):
         last_trade_time = nifty.get("last_trade_time")
         last_price = nifty.get("last_price", 0)
         
-        # Method 1: Check last_trade_time
+        # Method 1: Check last_trade_time for Nifty 50
         if last_trade_time is not None and hasattr(last_trade_time, 'date'):
             if last_trade_time.date() == today:
                 return True, "Market is open"
+            else:
+                return False, f"Market Holiday (Last trade: {last_trade_time.strftime('%Y-%m-%d')})"
         
-        # Method 2: Check if last_price exists (index quotes may not have last_trade_time)
-        if last_price > 0:
-            logger.info(f"Nifty 50 last_price: {last_price} — market appears active.")
-            return True, "Market is open"
-        
-        # Method 3: Try a liquid stock as fallback
+        # Method 2: Check a liquid stock (RELIANCE) as fallback
         try:
             stock_quote = kite.quote("NSE:RELIANCE")
             reliance = stock_quote.get("NSE:RELIANCE", {})
             stock_trade_time = reliance.get("last_trade_time")
-            if stock_trade_time and hasattr(stock_trade_time, 'date') and stock_trade_time.date() == today:
+            if stock_trade_time and hasattr(stock_trade_time, 'date'):
+                if stock_trade_time.date() == today:
+                    return True, "Market is open"
+                else:
+                    return False, f"Market Holiday (RELIANCE last trade: {stock_trade_time.strftime('%Y-%m-%d')})"
+        except Exception:
+            pass
+            
+        return False, "Could not verify live market activity (Holiday suspected)"
                 return True, "Market is open"
         except Exception:
             pass
