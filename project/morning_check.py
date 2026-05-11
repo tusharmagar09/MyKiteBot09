@@ -56,13 +56,13 @@ def run_check():
 
         # 5. Send Report
         report = (
-            f"☀️ *MoneyFlow Morning Report*\n"
+            f"☀️ <b>MoneyFlow Morning Report</b>\n"
             f"----------------------------------\n"
-            f"**Status:** {status}\n"
-            f"**User:** {user_name}\n"
-            f"**Available Margin:** Rs.{available_margin:,.2f}\n"
-            f"**Capital Invested:** Rs.{invested_value:,.2f}\n"
-            f"**Active Positions:** {active_positions}/12\n"
+            f"<b>Status:</b> {status}\n"
+            f"<b>User:</b> {user_name}\n"
+            f"<b>Available Trading Cash:</b> Rs.{available_margin:,.2f}\n"
+            f"<b>Manual Portfolio Value:</b> Rs.{invested_value:,.2f}\n"
+            f"<b>Bot Active Positions:</b> {active_positions}/12\n"
             f"{warning_msg}\n"
             f"----------------------------------\n"
             f"Bot is ready for the 3:00 PM Momentum Scan."
