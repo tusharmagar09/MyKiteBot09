@@ -1,0 +1,358 @@
+2026-05-08 14:38:11,715 [live_bot] INFO: ============================================================
+2026-05-08 14:38:11,716 [live_bot] INFO: LIVE TRADING BOT STARTED
+2026-05-08 14:38:11,716 [live_bot] INFO: ============================================================
+2026-05-08 14:38:11,716 [live_bot] INFO: Step 1: Auto-login to Kite...
+2026-05-08 14:38:11,716 [auto_login] INFO: Logging in as MQ2273...
+2026-05-08 14:38:11,777 [auto_login] INFO: Step 1/4: Login successful.
+2026-05-08 14:38:11,778 [auto_login] INFO: Generated TOTP code: 022935
+2026-05-08 14:38:11,778 [auto_login] INFO: Trying 2FA type: 'totp'...
+2026-05-08 14:38:11,816 [auto_login] INFO: Step 2/4: Two-factor auth successful (type='totp').
+2026-05-08 14:38:11,816 [auto_login] INFO: Following redirect chain to get request_token...
+2026-05-08 14:38:11,934 [auto_login] INFO: Step 3/4: Got request_token.
+2026-05-08 14:38:11,994 [auto_login] INFO: Step 4/4: Access token generated and saved.
+2026-05-08 14:38:12,800 [live_bot] INFO: Step 2: Checking if market is open...
+2026-05-08 14:38:12,800 [live_bot] INFO: Current IST time: 2026-05-08 14:38:12 IST
+2026-05-08 14:38:12,829 [live_bot] INFO: Nifty quote keys: ['instrument_token', 'tradingsymbol', 'timestamp', 'last_price', 'net_change', 'ohlc']
+2026-05-08 14:38:12,829 [live_bot] INFO: Nifty 50 last_price: 24219.7 — market appears active.
+2026-05-08 14:38:12,829 [live_bot] INFO: Step 3: Loading portfolio state...
+2026-05-08 14:38:12,830 [state] INFO: No existing state file found. Starting fresh.
+2026-05-08 14:38:13,512 [live_bot] INFO: Step 4: Reconciling with Kite holdings...
+2026-05-08 14:38:13,564 [state] WARNING: RECONCILIATION MISMATCH: 13 discrepancies found!
+2026-05-08 14:38:13,564 [state] WARNING:   GRSE: Kite=2, Local=0, Diff=2
+2026-05-08 14:38:13,565 [state] WARNING:   GESHIP: Kite=98, Local=0, Diff=98
+2026-05-08 14:38:13,565 [state] WARNING:   GLOBUSSPR: Kite=91, Local=0, Diff=91
+2026-05-08 14:38:13,565 [state] WARNING:   HBLENGINE: Kite=8, Local=0, Diff=8
+2026-05-08 14:38:13,565 [state] WARNING:   TDPOWERSYS: Kite=8, Local=0, Diff=8
+2026-05-08 14:38:13,565 [state] WARNING:   GVTD: Kite=2, Local=0, Diff=2
+2026-05-08 14:38:13,565 [state] WARNING:   TARIL: Kite=354, Local=0, Diff=354
+2026-05-08 14:38:13,566 [state] WARNING:   ONEGLOBAL: Kite=5, Local=0, Diff=5
+2026-05-08 14:38:13,566 [state] WARNING:   SRM: Kite=6, Local=0, Diff=6
+2026-05-08 14:38:13,566 [state] WARNING:   KRISHANA: Kite=8, Local=0, Diff=8
+2026-05-08 14:38:13,566 [state] WARNING:   JBMA: Kite=98, Local=0, Diff=98
+2026-05-08 14:38:13,566 [state] WARNING:   JSLL: Kite=6, Local=0, Diff=6
+2026-05-08 14:38:13,566 [state] WARNING:   ASHAPURMIN: Kite=6, Local=0, Diff=6
+2026-05-08 14:38:14,193 [live_bot] INFO: Step 5: Fetching market data...
+2026-05-08 14:38:14,256 [live_bot] INFO: Fetching data for 416 instruments...
+2026-05-08 14:38:37,798 [live_bot] INFO:   Progress: 50/416 instruments loaded. (50 valid so far)
+2026-05-08 14:39:01,290 [live_bot] INFO:   Progress: 100/416 instruments loaded. (100 valid so far)
+2026-05-08 14:39:24,605 [live_bot] INFO:   Progress: 150/416 instruments loaded. (150 valid so far)
+2026-05-08 14:39:50,737 [live_bot] INFO:   Progress: 200/416 instruments loaded. (200 valid so far)
+2026-05-08 14:40:15,199 [live_bot] INFO:   Progress: 250/416 instruments loaded. (250 valid so far)
+2026-05-08 14:40:42,682 [live_bot] INFO:   Progress: 300/416 instruments loaded. (300 valid so far)
+2026-05-08 14:41:09,696 [live_bot] INFO:   Progress: 350/416 instruments loaded. (350 valid so far)
+2026-05-08 14:41:33,882 [live_bot] INFO:   Progress: 400/416 instruments loaded. (400 valid so far)
+2026-05-08 14:41:43,322 [live_bot] INFO: Loaded 416 instruments with sufficient data.
+2026-05-08 14:41:44,264 [live_bot] INFO: Market Regime: Close=24224.05 | EMA50=24191.96 (ABOVE) | EMA200=24738.21 (SHAKY) | Risk=1.00%
+2026-05-08 14:41:44,265 [live_bot] INFO: Step 7: Processing 0 open positions...
+2026-05-08 14:41:44,265 [live_bot] INFO: Step 8: Scanning for entry signals...
+2026-05-08 14:41:44,871 [live_bot] INFO: Step 9: Saving state...
+2026-05-08 14:41:44,874 [state] INFO: State saved: 0 positions, capital=0.00
+2026-05-08 14:41:44,875 [live_bot] INFO: Step 10: Sending daily summary & updating live report...
+2026-05-08 14:41:44,875 [live_bot] ERROR: CRITICAL ERROR: module 'config' has no attribute 'REPORT_DIR'
+Traceback (most recent call last):
+  File "C:\Users\Ashish\.gemini\antigravity\scratch\MyKiteBot09\project\live_bot.py", line 516, in run
+    live_report_path = os.path.join(config.REPORT_DIR, "live_equity.csv")
+                                    ^^^^^^^^^^^^^^^^^
+AttributeError: module 'config' has no attribute 'REPORT_DIR'. Did you mean: 'REPORTS_DIR'?
+2026-05-08 14:41:45,494 [live_bot] INFO: [DRY RUN] Would sync and shutdown EC2 now.
+2026-05-08 14:42:17,433 [live_bot] INFO: ============================================================
+2026-05-08 14:42:17,436 [live_bot] INFO: LIVE TRADING BOT STARTED
+2026-05-08 14:42:17,437 [live_bot] INFO: ============================================================
+2026-05-08 14:42:17,437 [live_bot] INFO: Step 1: Auto-login to Kite...
+2026-05-08 14:42:17,437 [auto_login] INFO: Logging in as MQ2273...
+2026-05-08 14:42:17,526 [auto_login] INFO: Step 1/4: Login successful.
+2026-05-08 14:42:17,527 [auto_login] INFO: Generated TOTP code: 522145
+2026-05-08 14:42:17,527 [auto_login] INFO: Trying 2FA type: 'totp'...
+2026-05-08 14:42:17,559 [auto_login] INFO: Step 2/4: Two-factor auth successful (type='totp').
+2026-05-08 14:42:17,560 [auto_login] INFO: Following redirect chain to get request_token...
+2026-05-08 14:42:17,689 [auto_login] INFO: Step 3/4: Got request_token.
+2026-05-08 14:42:17,749 [auto_login] INFO: Step 4/4: Access token generated and saved.
+2026-05-08 14:42:18,372 [live_bot] INFO: Step 2: Checking if market is open...
+2026-05-08 14:42:18,373 [live_bot] INFO: Current IST time: 2026-05-08 14:42:18 IST
+2026-05-08 14:42:18,398 [live_bot] INFO: Nifty quote keys: ['instrument_token', 'tradingsymbol', 'timestamp', 'last_price', 'net_change', 'ohlc']
+2026-05-08 14:42:18,398 [live_bot] INFO: Nifty 50 last_price: 24225.6 — market appears active.
+2026-05-08 14:42:18,399 [live_bot] INFO: Step 3: Loading portfolio state...
+2026-05-08 14:42:18,404 [state] INFO: State backed up to: C:\Users\Ashish\.gemini\antigravity\scratch\MyKiteBot09\project\backups\state_2026-05-08.json
+2026-05-08 14:42:18,405 [state] INFO: State loaded: 0 positions, capital=0.00, last_run=2026-05-08 14:41:44
+2026-05-08 14:42:19,125 [live_bot] INFO: Step 4: Reconciling with Kite holdings...
+2026-05-08 14:42:19,166 [state] WARNING: RECONCILIATION MISMATCH: 13 discrepancies found!
+2026-05-08 14:42:19,166 [state] WARNING:   GRSE: Kite=2, Local=0, Diff=2
+2026-05-08 14:42:19,166 [state] WARNING:   KRISHANA: Kite=8, Local=0, Diff=8
+2026-05-08 14:42:19,167 [state] WARNING:   TARIL: Kite=354, Local=0, Diff=354
+2026-05-08 14:42:19,167 [state] WARNING:   ASHAPURMIN: Kite=6, Local=0, Diff=6
+2026-05-08 14:42:19,167 [state] WARNING:   GLOBUSSPR: Kite=91, Local=0, Diff=91
+2026-05-08 14:42:19,167 [state] WARNING:   JBMA: Kite=98, Local=0, Diff=98
+2026-05-08 14:42:19,167 [state] WARNING:   HBLENGINE: Kite=8, Local=0, Diff=8
+2026-05-08 14:42:19,167 [state] WARNING:   JSLL: Kite=6, Local=0, Diff=6
+2026-05-08 14:42:19,167 [state] WARNING:   TDPOWERSYS: Kite=8, Local=0, Diff=8
+2026-05-08 14:42:19,168 [state] WARNING:   ONEGLOBAL: Kite=5, Local=0, Diff=5
+2026-05-08 14:42:19,168 [state] WARNING:   GESHIP: Kite=98, Local=0, Diff=98
+2026-05-08 14:42:19,168 [state] WARNING:   GVTD: Kite=2, Local=0, Diff=2
+2026-05-08 14:42:19,168 [state] WARNING:   SRM: Kite=6, Local=0, Diff=6
+2026-05-08 14:42:19,793 [live_bot] INFO: Step 5: Fetching market data...
+2026-05-08 14:42:19,802 [live_bot] INFO: Fetching data for 416 instruments...
+2026-05-08 14:42:43,985 [live_bot] INFO:   Progress: 50/416 instruments loaded. (50 valid so far)
+2026-05-08 14:43:08,098 [live_bot] INFO:   Progress: 100/416 instruments loaded. (100 valid so far)
+2026-05-08 14:43:35,573 [live_bot] INFO:   Progress: 150/416 instruments loaded. (150 valid so far)
+2026-05-08 14:44:01,717 [live_bot] INFO:   Progress: 200/416 instruments loaded. (200 valid so far)
+2026-05-08 14:47:37,296 [live_bot] INFO: ============================================================
+2026-05-08 14:47:37,297 [live_bot] INFO: LIVE TRADING BOT STARTED
+2026-05-08 14:47:37,297 [live_bot] INFO: ============================================================
+2026-05-08 14:47:37,297 [live_bot] INFO: Step 1: Auto-login to Kite...
+2026-05-08 14:47:37,297 [auto_login] INFO: Logging in as MQ2273...
+2026-05-08 14:47:37,369 [auto_login] INFO: Step 1/4: Login successful.
+2026-05-08 14:47:37,369 [auto_login] INFO: Generated TOTP code: 603371
+2026-05-08 14:47:37,369 [auto_login] INFO: Trying 2FA type: 'totp'...
+2026-05-08 14:47:37,398 [auto_login] INFO: Step 2/4: Two-factor auth successful (type='totp').
+2026-05-08 14:47:37,399 [auto_login] INFO: Following redirect chain to get request_token...
+2026-05-08 14:47:37,534 [auto_login] INFO: Step 3/4: Got request_token.
+2026-05-08 14:47:37,612 [auto_login] INFO: Step 4/4: Access token generated and saved.
+2026-05-08 14:47:38,230 [live_bot] INFO: Step 2: Checking if market is open...
+2026-05-08 14:47:38,230 [live_bot] INFO: Current IST time: 2026-05-08 14:47:38 IST
+2026-05-08 14:47:38,262 [live_bot] INFO: Nifty quote keys: ['instrument_token', 'tradingsymbol', 'timestamp', 'last_price', 'net_change', 'ohlc']
+2026-05-08 14:47:38,262 [live_bot] INFO: Nifty 50 last_price: 24233.65 — market appears active.
+2026-05-08 14:47:38,262 [live_bot] INFO: Step 3: Loading portfolio state...
+2026-05-08 14:47:38,264 [state] INFO: State backed up to: C:\Users\Ashish\.gemini\antigravity\scratch\MyKiteBot09\project\backups\state_2026-05-08.json
+2026-05-08 14:47:38,265 [state] INFO: State loaded: 0 positions, capital=0.00, last_run=2026-05-08 14:41:44
+2026-05-08 14:47:49,159 [live_bot] INFO: Step 4: Reconciling with Kite holdings...
+2026-05-08 14:47:49,222 [state] WARNING: RECONCILIATION MISMATCH: 13 discrepancies found!
+2026-05-08 14:47:49,222 [state] WARNING:   GLOBUSSPR: Kite=91, Local=0, Diff=91
+2026-05-08 14:47:49,222 [state] WARNING:   SRM: Kite=6, Local=0, Diff=6
+2026-05-08 14:47:49,222 [state] WARNING:   ONEGLOBAL: Kite=5, Local=0, Diff=5
+2026-05-08 14:47:49,223 [state] WARNING:   GVTD: Kite=2, Local=0, Diff=2
+2026-05-08 14:47:49,223 [state] WARNING:   JSLL: Kite=6, Local=0, Diff=6
+2026-05-08 14:47:49,223 [state] WARNING:   GRSE: Kite=2, Local=0, Diff=2
+2026-05-08 14:47:49,223 [state] WARNING:   TARIL: Kite=354, Local=0, Diff=354
+2026-05-08 14:47:49,223 [state] WARNING:   GESHIP: Kite=98, Local=0, Diff=98
+2026-05-08 14:47:49,224 [state] WARNING:   ASHAPURMIN: Kite=6, Local=0, Diff=6
+2026-05-08 14:47:49,224 [state] WARNING:   KRISHANA: Kite=8, Local=0, Diff=8
+2026-05-08 14:47:49,224 [state] WARNING:   HBLENGINE: Kite=8, Local=0, Diff=8
+2026-05-08 14:47:49,224 [state] WARNING:   JBMA: Kite=98, Local=0, Diff=98
+2026-05-08 14:47:49,224 [state] WARNING:   TDPOWERSYS: Kite=8, Local=0, Diff=8
+2026-05-08 14:47:49,826 [live_bot] INFO: Step 5: Fetching market data...
+2026-05-08 14:47:49,832 [live_bot] INFO: Fetching data for 416 instruments...
+2026-05-08 14:48:13,329 [live_bot] INFO:   Progress: 50/416 instruments loaded. (50 valid so far)
+2026-05-08 14:48:48,561 [live_bot] INFO:   Progress: 100/416 instruments loaded. (100 valid so far)
+2026-05-08 14:49:12,946 [live_bot] INFO:   Progress: 150/416 instruments loaded. (150 valid so far)
+2026-05-08 14:49:36,766 [live_bot] INFO:   Progress: 200/416 instruments loaded. (200 valid so far)
+2026-05-08 14:50:00,825 [live_bot] INFO:   Progress: 250/416 instruments loaded. (250 valid so far)
+2026-05-08 14:50:25,158 [live_bot] INFO:   Progress: 300/416 instruments loaded. (300 valid so far)
+2026-05-08 14:50:49,428 [live_bot] INFO:   Progress: 350/416 instruments loaded. (350 valid so far)
+2026-05-08 14:51:13,044 [live_bot] INFO:   Progress: 400/416 instruments loaded. (400 valid so far)
+2026-05-08 14:51:20,741 [live_bot] INFO: Loaded 416 instruments with sufficient data.
+2026-05-08 14:51:21,604 [live_bot] INFO: Market Regime: Close=24233.00 | EMA50=24192.31 (ABOVE) | EMA200=24738.30 (SHAKY) | Risk=1.00%
+2026-05-08 14:51:21,605 [live_bot] INFO: Step 7: Processing 0 open positions...
+2026-05-08 14:51:21,606 [live_bot] INFO: Step 8: Scanning for entry signals...
+2026-05-08 14:51:21,898 [live_bot] INFO: Step 9: Saving state...
+2026-05-08 14:51:21,903 [state] INFO: State saved: 0 positions, capital=0.00
+2026-05-08 14:51:21,903 [live_bot] INFO: Step 10: Sending daily summary & updating live report...
+2026-05-08 14:51:22,627 [live_bot] INFO: Run complete: 0 entries, 0 exits, Equity=0.00
+2026-05-08 14:51:22,627 [live_bot] INFO: [DRY RUN] Would sync and shutdown EC2 now.
+2026-05-08 14:53:32,289 [live_bot] INFO: ============================================================
+2026-05-08 14:53:32,290 [live_bot] INFO: LIVE TRADING BOT STARTED
+2026-05-08 14:53:32,290 [live_bot] INFO: ============================================================
+2026-05-08 14:53:32,290 [live_bot] INFO: Step 1: Auto-login to Kite...
+2026-05-08 14:53:32,290 [auto_login] INFO: Logging in as MQ2273...
+2026-05-08 14:53:32,366 [auto_login] INFO: Step 1/4: Login successful.
+2026-05-08 14:53:32,366 [auto_login] INFO: Generated TOTP code: 905727
+2026-05-08 14:53:32,366 [auto_login] INFO: Trying 2FA type: 'totp'...
+2026-05-08 14:53:32,397 [auto_login] INFO: Step 2/4: Two-factor auth successful (type='totp').
+2026-05-08 14:53:32,398 [auto_login] INFO: Following redirect chain to get request_token...
+2026-05-08 14:53:32,539 [auto_login] INFO: Step 3/4: Got request_token.
+2026-05-08 14:53:32,608 [auto_login] INFO: Step 4/4: Access token generated and saved.
+2026-05-08 14:53:33,230 [live_bot] INFO: Step 2: Checking if market is open...
+2026-05-08 14:53:33,230 [live_bot] INFO: Current IST time: 2026-05-08 14:53:33 IST
+2026-05-08 14:53:33,251 [live_bot] INFO: Nifty quote keys: ['instrument_token', 'tradingsymbol', 'timestamp', 'last_price', 'net_change', 'ohlc']
+2026-05-08 14:53:33,251 [live_bot] INFO: Nifty 50 last_price: 24233.65 — market appears active.
+2026-05-08 14:53:33,251 [live_bot] INFO: Step 3: Loading portfolio state...
+2026-05-08 14:53:33,253 [state] INFO: State backed up to: C:\Users\Ashish\.gemini\antigravity\scratch\MyKiteBot09\project\backups\state_2026-05-08.json
+2026-05-08 14:53:33,253 [state] INFO: State loaded: 0 positions, capital=0.00, last_run=2026-05-08 14:51:21
+2026-05-08 14:53:33,298 [live_bot] INFO: Broker cash available: Rs.0.00 | Bot internal capital: Rs.0.00
+2026-05-08 14:53:33,298 [live_bot] WARNING: Very low cash balance: Rs.0.00. Entries will likely be skipped.
+2026-05-08 14:53:33,894 [live_bot] INFO: Step 4: Reconciling with Kite holdings...
+2026-05-08 14:53:33,941 [state] WARNING: RECONCILIATION MISMATCH: 13 discrepancies found!
+2026-05-08 14:53:33,941 [state] WARNING:   GESHIP: Kite=98, Local=0, Diff=98
+2026-05-08 14:53:33,941 [state] WARNING:   HBLENGINE: Kite=8, Local=0, Diff=8
+2026-05-08 14:53:33,941 [state] WARNING:   GRSE: Kite=2, Local=0, Diff=2
+2026-05-08 14:53:33,942 [state] WARNING:   GLOBUSSPR: Kite=91, Local=0, Diff=91
+2026-05-08 14:53:33,942 [state] WARNING:   SRM: Kite=6, Local=0, Diff=6
+2026-05-08 14:53:33,942 [state] WARNING:   ONEGLOBAL: Kite=5, Local=0, Diff=5
+2026-05-08 14:53:33,942 [state] WARNING:   TDPOWERSYS: Kite=8, Local=0, Diff=8
+2026-05-08 14:53:33,942 [state] WARNING:   KRISHANA: Kite=8, Local=0, Diff=8
+2026-05-08 14:53:33,942 [state] WARNING:   TARIL: Kite=354, Local=0, Diff=354
+2026-05-08 14:53:33,942 [state] WARNING:   GVTD: Kite=2, Local=0, Diff=2
+2026-05-08 14:53:33,942 [state] WARNING:   JSLL: Kite=6, Local=0, Diff=6
+2026-05-08 14:53:33,942 [state] WARNING:   JBMA: Kite=98, Local=0, Diff=98
+2026-05-08 14:53:33,943 [state] WARNING:   ASHAPURMIN: Kite=6, Local=0, Diff=6
+2026-05-08 14:53:34,547 [live_bot] INFO: Step 5: Fetching market data...
+2026-05-08 14:53:34,553 [live_bot] INFO: Fetching data for 416 instruments...
+2026-05-08 14:53:57,152 [live_bot] INFO:   Progress: 50/416 instruments loaded. (50 valid so far)
+2026-05-08 14:54:21,032 [live_bot] INFO:   Progress: 100/416 instruments loaded. (100 valid so far)
+2026-05-08 14:54:45,667 [live_bot] INFO:   Progress: 150/416 instruments loaded. (150 valid so far)
+2026-05-08 14:55:10,127 [live_bot] INFO:   Progress: 200/416 instruments loaded. (200 valid so far)
+2026-05-08 14:55:33,947 [live_bot] INFO:   Progress: 250/416 instruments loaded. (250 valid so far)
+2026-05-08 14:55:57,938 [live_bot] INFO:   Progress: 300/416 instruments loaded. (300 valid so far)
+2026-05-08 14:56:22,191 [live_bot] INFO:   Progress: 350/416 instruments loaded. (350 valid so far)
+2026-05-08 14:56:46,071 [live_bot] INFO:   Progress: 400/416 instruments loaded. (400 valid so far)
+2026-05-08 14:56:53,671 [live_bot] INFO: Loaded 416 instruments with sufficient data.
+2026-05-08 14:56:54,540 [live_bot] INFO: Market Regime: Close=24227.60 | EMA50=24192.10 (ABOVE) | EMA200=24738.25 (SHAKY) | Risk=1.00%
+2026-05-08 14:56:54,540 [live_bot] INFO: Step 7: Processing 0 open positions...
+2026-05-08 14:56:54,540 [live_bot] INFO: Step 8: Scanning for entry signals...
+2026-05-08 14:56:54,898 [live_bot] INFO: Step 9: Saving state...
+2026-05-08 14:56:54,901 [state] INFO: State saved: 0 positions, capital=0.00
+2026-05-08 14:56:54,902 [live_bot] INFO: Step 10: Sending daily summary & updating live report...
+2026-05-08 14:56:55,521 [live_bot] INFO: Run complete: 0 entries, 0 exits, Equity=0.00
+2026-05-08 14:56:55,521 [live_bot] INFO: [DRY RUN] Would sync and shutdown EC2 now.
+2026-05-08 14:57:30,459 [live_bot] INFO: ============================================================
+2026-05-08 14:57:30,459 [live_bot] INFO: LIVE TRADING BOT STARTED
+2026-05-08 14:57:30,460 [live_bot] INFO: ============================================================
+2026-05-08 14:57:30,460 [live_bot] INFO: Step 1: Auto-login to Kite...
+2026-05-08 14:57:30,460 [auto_login] INFO: Logging in as MQ2273...
+2026-05-08 14:57:30,529 [auto_login] INFO: Step 1/4: Login successful.
+2026-05-08 14:57:30,530 [auto_login] INFO: Generated TOTP code: 177308
+2026-05-08 14:57:30,530 [auto_login] INFO: Trying 2FA type: 'totp'...
+2026-05-08 14:57:30,560 [auto_login] INFO: Step 2/4: Two-factor auth successful (type='totp').
+2026-05-08 14:57:30,561 [auto_login] INFO: Following redirect chain to get request_token...
+2026-05-08 14:57:30,693 [auto_login] INFO: Step 3/4: Got request_token.
+2026-05-08 14:57:30,753 [auto_login] INFO: Step 4/4: Access token generated and saved.
+2026-05-08 14:57:41,359 [live_bot] INFO: Step 2: Checking if market is open...
+2026-05-08 14:57:41,359 [live_bot] INFO: Current IST time: 2026-05-08 14:57:41 IST
+2026-05-08 14:57:41,389 [live_bot] INFO: Nifty quote keys: ['instrument_token', 'tradingsymbol', 'timestamp', 'last_price', 'net_change', 'ohlc']
+2026-05-08 14:57:41,389 [live_bot] INFO: Nifty 50 last_price: 24234.45 — market appears active.
+2026-05-08 14:57:41,390 [live_bot] INFO: Step 3: Loading portfolio state...
+2026-05-08 14:57:41,392 [state] INFO: State backed up to: C:\Users\Ashish\.gemini\antigravity\scratch\MyKiteBot09\project\backups\state_2026-05-08.json
+2026-05-08 14:57:41,392 [state] INFO: State loaded: 0 positions, capital=0.00, last_run=2026-05-08 14:56:54
+2026-05-08 14:57:41,444 [live_bot] INFO: Broker cash available: Rs.74,408.00 | Bot internal capital: Rs.0.00
+2026-05-08 14:57:41,444 [live_bot] INFO: Step 4: Reconciling with Kite holdings...
+2026-05-08 14:57:41,488 [state] WARNING: RECONCILIATION MISMATCH: 13 discrepancies found!
+2026-05-08 14:57:41,488 [state] WARNING:   GLOBUSSPR: Kite=91, Local=0, Diff=91
+2026-05-08 14:57:41,488 [state] WARNING:   GESHIP: Kite=98, Local=0, Diff=98
+2026-05-08 14:57:41,488 [state] WARNING:   ASHAPURMIN: Kite=6, Local=0, Diff=6
+2026-05-08 14:57:41,488 [state] WARNING:   JBMA: Kite=98, Local=0, Diff=98
+2026-05-08 14:57:41,489 [state] WARNING:   JSLL: Kite=6, Local=0, Diff=6
+2026-05-08 14:57:41,489 [state] WARNING:   SRM: Kite=6, Local=0, Diff=6
+2026-05-08 14:57:41,489 [state] WARNING:   TARIL: Kite=354, Local=0, Diff=354
+2026-05-08 14:57:41,489 [state] WARNING:   GRSE: Kite=2, Local=0, Diff=2
+2026-05-08 14:57:41,489 [state] WARNING:   TDPOWERSYS: Kite=8, Local=0, Diff=8
+2026-05-08 14:57:41,489 [state] WARNING:   ONEGLOBAL: Kite=5, Local=0, Diff=5
+2026-05-08 14:57:41,490 [state] WARNING:   HBLENGINE: Kite=8, Local=0, Diff=8
+2026-05-08 14:57:41,490 [state] WARNING:   KRISHANA: Kite=8, Local=0, Diff=8
+2026-05-08 14:57:41,490 [state] WARNING:   GVTD: Kite=2, Local=0, Diff=2
+2026-05-08 14:57:42,076 [live_bot] INFO: Step 5: Fetching market data...
+2026-05-08 14:57:42,083 [live_bot] INFO: Fetching data for 416 instruments...
+2026-05-08 14:58:06,173 [live_bot] INFO:   Progress: 50/416 instruments loaded. (50 valid so far)
+2026-05-08 14:58:29,870 [live_bot] INFO:   Progress: 100/416 instruments loaded. (100 valid so far)
+2026-05-08 14:58:53,311 [live_bot] INFO: ============================================================
+2026-05-08 14:58:53,312 [live_bot] INFO: LIVE TRADING BOT STARTED
+2026-05-08 14:58:53,312 [live_bot] INFO: ============================================================
+2026-05-08 14:58:53,312 [live_bot] INFO: Step 1: Auto-login to Kite...
+2026-05-08 14:58:53,313 [auto_login] INFO: Logging in as MQ2273...
+2026-05-08 14:58:53,384 [auto_login] INFO: Step 1/4: Login successful.
+2026-05-08 14:58:53,385 [auto_login] INFO: Generated TOTP code: 427156
+2026-05-08 14:58:53,385 [auto_login] INFO: Trying 2FA type: 'totp'...
+2026-05-08 14:58:53,417 [auto_login] INFO: Step 2/4: Two-factor auth successful (type='totp').
+2026-05-08 14:58:53,417 [auto_login] INFO: Following redirect chain to get request_token...
+2026-05-08 14:58:53,558 [auto_login] INFO: Step 3/4: Got request_token.
+2026-05-08 14:58:53,627 [auto_login] INFO: Step 4/4: Access token generated and saved.
+2026-05-08 14:58:54,235 [live_bot] INFO: Step 2: Checking if market is open...
+2026-05-08 14:58:54,236 [live_bot] INFO: Current IST time: 2026-05-08 14:58:54 IST
+2026-05-08 14:58:54,262 [live_bot] INFO: Nifty quote keys: ['instrument_token', 'tradingsymbol', 'timestamp', 'last_price', 'net_change', 'ohlc']
+2026-05-08 14:58:54,263 [live_bot] INFO: Nifty 50 last_price: 24232.55 — market appears active.
+2026-05-08 14:58:54,263 [live_bot] INFO: Step 3: Loading portfolio state...
+2026-05-08 14:58:54,265 [state] INFO: State backed up to: C:\Users\Ashish\.gemini\antigravity\scratch\MyKiteBot09\project\backups\state_2026-05-08.json
+2026-05-08 14:58:54,266 [state] INFO: State loaded: 0 positions, capital=0.00, last_run=2026-05-08 14:56:54
+2026-05-08 14:58:54,312 [live_bot] INFO: Broker cash available: Rs.74,408.00 | Bot internal capital: Rs.0.00
+2026-05-08 14:58:54,312 [live_bot] INFO: Step 4: Reconciling with Kite holdings...
+2026-05-08 14:58:54,359 [state] WARNING: RECONCILIATION MISMATCH: 13 discrepancies found!
+2026-05-08 14:58:54,360 [state] WARNING:   ONEGLOBAL: Kite=5, Local=0, Diff=5
+2026-05-08 14:58:54,360 [state] WARNING:   GLOBUSSPR: Kite=91, Local=0, Diff=91
+2026-05-08 14:58:54,360 [state] WARNING:   TARIL: Kite=354, Local=0, Diff=354
+2026-05-08 14:58:54,360 [state] WARNING:   GESHIP: Kite=98, Local=0, Diff=98
+2026-05-08 14:58:54,360 [state] WARNING:   ASHAPURMIN: Kite=6, Local=0, Diff=6
+2026-05-08 14:58:54,360 [state] WARNING:   TDPOWERSYS: Kite=8, Local=0, Diff=8
+2026-05-08 14:58:54,360 [state] WARNING:   GRSE: Kite=2, Local=0, Diff=2
+2026-05-08 14:58:54,360 [state] WARNING:   JSLL: Kite=6, Local=0, Diff=6
+2026-05-08 14:58:54,361 [state] WARNING:   KRISHANA: Kite=8, Local=0, Diff=8
+2026-05-08 14:58:54,361 [state] WARNING:   GVTD: Kite=2, Local=0, Diff=2
+2026-05-08 14:58:54,361 [state] WARNING:   SRM: Kite=6, Local=0, Diff=6
+2026-05-08 14:58:54,361 [state] WARNING:   HBLENGINE: Kite=8, Local=0, Diff=8
+2026-05-08 14:58:54,361 [state] WARNING:   JBMA: Kite=98, Local=0, Diff=98
+2026-05-08 14:58:54,954 [live_bot] INFO: Step 5: Fetching market data...
+2026-05-08 14:58:54,961 [live_bot] INFO: Fetching data for 416 instruments...
+2026-05-08 14:59:18,204 [live_bot] INFO:   Progress: 50/416 instruments loaded. (50 valid so far)
+2026-05-08 14:59:41,451 [live_bot] INFO:   Progress: 100/416 instruments loaded. (100 valid so far)
+2026-05-08 15:00:05,339 [live_bot] INFO:   Progress: 150/416 instruments loaded. (150 valid so far)
+2026-05-08 15:00:31,491 [live_bot] INFO:   Progress: 200/416 instruments loaded. (200 valid so far)
+2026-05-08 15:00:56,326 [live_bot] INFO:   Progress: 250/416 instruments loaded. (250 valid so far)
+2026-05-08 15:01:20,853 [live_bot] INFO:   Progress: 300/416 instruments loaded. (300 valid so far)
+2026-05-08 15:01:44,809 [live_bot] INFO:   Progress: 350/416 instruments loaded. (350 valid so far)
+2026-05-08 15:02:09,338 [live_bot] INFO:   Progress: 400/416 instruments loaded. (400 valid so far)
+2026-05-08 15:02:17,139 [live_bot] INFO: Loaded 416 instruments with sufficient data.
+2026-05-08 15:02:17,996 [live_bot] INFO: Market Regime: Close=24183.70 | EMA50=24190.38 (BELOW) | EMA200=24737.81 (SHAKY) | Risk=1.00%
+2026-05-08 15:02:17,997 [live_bot] INFO: Step 7: Processing 0 open positions...
+2026-05-08 15:02:17,997 [live_bot] INFO: Step 8: Scanning for entry signals...
+2026-05-08 15:02:17,998 [live_bot] INFO: Step 9: Saving state...
+2026-05-08 15:02:18,001 [state] INFO: State saved: 0 positions, capital=0.00
+2026-05-08 15:02:18,001 [live_bot] INFO: Step 10: Sending daily summary & updating live report...
+2026-05-08 15:02:18,638 [live_bot] INFO: Run complete: 0 entries, 0 exits, Equity=0.00
+2026-05-08 15:02:18,638 [live_bot] INFO: Syncing reports to GitHub...
+2026-05-08 15:02:21,677 [live_bot] INFO: Reports synced successfully!
+2026-05-08 15:02:21,677 [live_bot] INFO: Shutting down EC2 instance...
+2026-05-08 15:02:22,268 [live_bot] ERROR: Shutdown command failed: [WinError 2] The system cannot find the file specified
+2026-05-08 15:02:41,461 [live_bot] INFO: ============================================================
+2026-05-08 15:02:41,461 [live_bot] INFO: LIVE TRADING BOT STARTED
+2026-05-08 15:02:41,461 [live_bot] INFO: ============================================================
+2026-05-08 15:02:41,461 [live_bot] INFO: Step 1: Auto-login to Kite...
+2026-05-08 15:02:41,462 [auto_login] INFO: Logging in as MQ2273...
+2026-05-08 15:02:41,539 [auto_login] INFO: Step 1/4: Login successful.
+2026-05-08 15:02:41,540 [auto_login] INFO: Generated TOTP code: 605528
+2026-05-08 15:02:41,540 [auto_login] INFO: Trying 2FA type: 'totp'...
+2026-05-08 15:02:41,570 [auto_login] INFO: Step 2/4: Two-factor auth successful (type='totp').
+2026-05-08 15:02:41,570 [auto_login] INFO: Following redirect chain to get request_token...
+2026-05-08 15:02:41,689 [auto_login] INFO: Step 3/4: Got request_token.
+2026-05-08 15:02:41,758 [auto_login] INFO: Step 4/4: Access token generated and saved.
+2026-05-08 15:02:42,432 [live_bot] INFO: Step 2: Checking if market is open...
+2026-05-08 15:02:42,433 [live_bot] INFO: Current IST time: 2026-05-08 15:02:42 IST
+2026-05-08 15:02:42,460 [live_bot] INFO: Nifty quote keys: ['instrument_token', 'tradingsymbol', 'timestamp', 'last_price', 'net_change', 'ohlc']
+2026-05-08 15:02:42,460 [live_bot] INFO: Nifty 50 last_price: 24176.5 — market appears active.
+2026-05-08 15:02:42,461 [live_bot] INFO: Step 3: Loading portfolio state...
+2026-05-08 15:02:42,463 [state] INFO: State backed up to: C:\Users\Ashish\.gemini\antigravity\scratch\MyKiteBot09\project\backups\state_2026-05-08.json
+2026-05-08 15:02:42,463 [state] INFO: State loaded: 0 positions, capital=74408.00, last_run=2026-05-08 15:02:18
+2026-05-08 15:02:42,510 [live_bot] INFO: Broker cash available: Rs.74,408.00 | Bot internal capital: Rs.74,408.00
+2026-05-08 15:02:42,511 [live_bot] INFO: Step 4: Reconciling with Kite holdings...
+2026-05-08 15:02:42,555 [state] WARNING: RECONCILIATION MISMATCH: 13 discrepancies found!
+2026-05-08 15:02:42,555 [state] WARNING:   GRSE: Kite=2, Local=0, Diff=2
+2026-05-08 15:02:42,556 [state] WARNING:   TDPOWERSYS: Kite=8, Local=0, Diff=8
+2026-05-08 15:02:42,556 [state] WARNING:   JBMA: Kite=98, Local=0, Diff=98
+2026-05-08 15:02:42,556 [state] WARNING:   JSLL: Kite=6, Local=0, Diff=6
+2026-05-08 15:02:42,556 [state] WARNING:   ONEGLOBAL: Kite=5, Local=0, Diff=5
+2026-05-08 15:02:42,556 [state] WARNING:   GESHIP: Kite=98, Local=0, Diff=98
+2026-05-08 15:02:42,556 [state] WARNING:   GLOBUSSPR: Kite=91, Local=0, Diff=91
+2026-05-08 15:02:42,557 [state] WARNING:   KRISHANA: Kite=8, Local=0, Diff=8
+2026-05-08 15:02:42,557 [state] WARNING:   ASHAPURMIN: Kite=6, Local=0, Diff=6
+2026-05-08 15:02:42,557 [state] WARNING:   GVTD: Kite=2, Local=0, Diff=2
+2026-05-08 15:02:42,557 [state] WARNING:   TARIL: Kite=354, Local=0, Diff=354
+2026-05-08 15:02:42,557 [state] WARNING:   HBLENGINE: Kite=8, Local=0, Diff=8
+2026-05-08 15:02:42,557 [state] WARNING:   SRM: Kite=6, Local=0, Diff=6
+2026-05-08 15:02:43,182 [live_bot] INFO: Step 5: Fetching market data...
+2026-05-08 15:02:43,186 [live_bot] INFO: Fetching data for 416 instruments...
+2026-05-08 15:03:06,112 [live_bot] INFO:   Progress: 50/416 instruments loaded. (50 valid so far)
+2026-05-08 15:03:29,928 [live_bot] INFO:   Progress: 100/416 instruments loaded. (100 valid so far)
+2026-05-08 15:03:53,509 [live_bot] INFO:   Progress: 150/416 instruments loaded. (150 valid so far)
+2026-05-08 15:04:17,105 [live_bot] INFO:   Progress: 200/416 instruments loaded. (200 valid so far)
+2026-05-08 15:04:40,932 [live_bot] INFO:   Progress: 250/416 instruments loaded. (250 valid so far)
+2026-05-08 15:05:04,732 [live_bot] INFO:   Progress: 300/416 instruments loaded. (300 valid so far)
+2026-05-08 15:05:28,827 [live_bot] INFO:   Progress: 350/416 instruments loaded. (350 valid so far)
+2026-05-08 15:05:53,060 [live_bot] INFO:   Progress: 400/416 instruments loaded. (400 valid so far)
+2026-05-08 15:06:00,862 [live_bot] INFO: Loaded 416 instruments with sufficient data.
+2026-05-08 15:06:01,723 [live_bot] INFO: Market Regime: Close=24184.95 | EMA50=24190.43 (BELOW) | EMA200=24737.82 (SHAKY) | Risk=1.00%
+2026-05-08 15:06:01,724 [live_bot] INFO: Step 7: Processing 0 open positions...
+2026-05-08 15:06:01,724 [live_bot] INFO: Step 8: Scanning for entry signals...
+2026-05-08 15:06:01,725 [live_bot] INFO: Step 9: Saving state...
+2026-05-08 15:06:01,727 [state] INFO: State saved: 0 positions, capital=74408.00
+2026-05-08 15:06:01,728 [live_bot] INFO: Step 10: Sending daily summary & updating live report...
+2026-05-08 15:06:02,351 [live_bot] INFO: Run complete: 0 entries, 0 exits, Equity=74,408.00
+2026-05-08 15:06:02,351 [live_bot] INFO: Syncing reports to GitHub...
+2026-05-08 15:06:05,737 [live_bot] INFO: Reports synced successfully!
+2026-05-08 15:06:05,737 [live_bot] INFO: Shutting down EC2 instance...
+2026-05-08 15:06:06,370 [live_bot] ERROR: Shutdown command failed: [WinError 2] The system cannot find the file specified

@@ -8,6 +8,7 @@ import time
 import logging
 import requests
 import pyotp
+from datetime import datetime
 from kiteconnect import KiteConnect
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -18,13 +19,27 @@ logger = logging.getLogger("auto_login")
 
 def auto_login():
     """
-    Automates the full Kite Connect login flow:
-    1. POST credentials to Kite login endpoint
-    2. Submit TOTP for two-factor auth
-    3. Capture request_token from redirect
-    4. Exchange for access_token
-    Returns a fully authenticated KiteConnect instance.
+    Automates the full Kite Connect login flow. 
+    Caches token to prevent multiple logins (dual session issues).
     """
+    # Check for existing token from today
+    if os.path.exists(config.TOKEN_FILE):
+        mod_time = os.path.getmtime(config.TOKEN_FILE)
+        if datetime.fromtimestamp(mod_time).date() == datetime.now().date():
+            try:
+                with open(config.TOKEN_FILE, "r") as f:
+                    cached_token = f.read().strip()
+                
+                kite = KiteConnect(api_key=config.API_KEY)
+                kite.set_access_token(cached_token)
+                
+                # Verify if token is still valid
+                kite.profile()
+                logger.info("Using cached access token from today. (No fresh login required)")
+                return kite
+            except Exception:
+                logger.info("Cached token invalid or expired. Proceeding with fresh login...")
+
     api_key = config.API_KEY
     api_secret = config.API_SECRET
     user_id = config.KITE_USER_ID
@@ -32,8 +47,7 @@ def auto_login():
     totp_secret = config.KITE_TOTP_SECRET
 
     if not all([api_key, api_secret, user_id, password, totp_secret]):
-        logger.error("Missing credentials in .env file. Check API_KEY, API_SECRET, KITE_USER_ID, KITE_PASSWORD, KITE_TOTP_SECRET.")
-        sys.exit(1)
+        raise Exception("Missing credentials in .env file. Check API_KEY, API_SECRET, KITE_USER_ID, KITE_PASSWORD, KITE_TOTP_SECRET.")
 
     session = requests.Session()
 
@@ -48,14 +62,12 @@ def auto_login():
         login_data = login_resp.json()
 
         if login_data.get("status") != "success":
-            logger.error(f"Login failed: {login_data}")
-            sys.exit(1)
+            raise Exception(f"Kite Login failed: {login_data.get('message', 'Unknown error')}")
 
         request_id = login_data["data"]["request_id"]
         logger.info("Step 1/4: Login successful.")
     except Exception as e:
-        logger.error(f"Login request failed: {e}")
-        sys.exit(1)
+        raise Exception(f"Login request failed: {e}")
 
     # --- Step 2: Submit TOTP for two-factor auth ---
     try:
@@ -111,11 +123,9 @@ def auto_login():
                     break
 
         if not twofa_success:
-            logger.error(f"2FA FAILED with all types: {twofa_data}")
-            sys.exit(1)
+            raise Exception(f"2FA FAILED with all types: {twofa_data.get('message', 'Unknown error')}")
     except Exception as e:
-        logger.error(f"2FA request failed: {e}")
-        sys.exit(1)
+        raise Exception(f"2FA request failed: {e}")
 
     # --- Step 3: Get request_token via redirect ---
     try:
@@ -156,14 +166,11 @@ def auto_login():
                         request_token = params2.get("request_token", [None])[0]
 
         if not request_token:
-            logger.error(f"Could not extract request_token. Final URL: {final_url}")
-            logger.error("Check that your Kite Connect app has a valid Redirect URL configured.")
-            sys.exit(1)
+            raise Exception(f"Could not extract request_token. Final URL: {final_url}. Check your Redirect URL.")
 
         logger.info("Step 3/4: Got request_token.")
     except Exception as e:
-        logger.error(f"Redirect capture failed: {e}")
-        sys.exit(1)
+        raise Exception(f"Redirect capture failed: {e}")
 
     # --- Step 4: Exchange request_token for access_token ---
     try:
@@ -181,5 +188,4 @@ def auto_login():
         return kite
 
     except Exception as e:
-        logger.error(f"Session generation failed: {e}")
-        sys.exit(1)
+        raise Exception(f"Session generation failed: {e}")

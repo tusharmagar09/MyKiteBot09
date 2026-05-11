@@ -110,41 +110,47 @@ def lambda_handler(event, context):
     return func_arn
 
 
-def create_eventbridge_rule(events_client, lambda_client, func_arn, rule_name="TradingBotSchedule"):
-    """Create an EventBridge rule that fires Mon-Fri at 2:50 PM IST (9:20 AM UTC)."""
-    # 2:50 PM IST = 9:20 AM UTC
-    response = events_client.put_rule(
-        Name=rule_name,
-        ScheduleExpression="cron(20 9 ? * MON-FRI *)",
+def create_eventbridge_rules(events_client, lambda_client, func_arn):
+    """Create dual EventBridge rules: 9:15 AM Morning Check & 3:00 PM Evening Scan."""
+    
+    # --- Rule 1: Morning Check (9:15 AM IST = 3:45 AM UTC) ---
+    events_client.put_rule(
+        Name="MoneyFlow_Morning_Check",
+        ScheduleExpression="cron(45 3 ? * MON-FRI *)",
         State="ENABLED",
-        Description="Start EC2 for live trading bot at 2:50 PM IST, Mon-Fri"
+        Description="Start EC2 for MoneyFlow Health Check at 9:15 AM IST"
     )
-    rule_arn = response['RuleArn']
-    print(f"Created EventBridge Rule: {rule_arn}")
-
-    # Add Lambda as target
     events_client.put_targets(
-        Rule=rule_name,
-        Targets=[{
-            'Id': 'TradingBotTarget',
-            'Arn': func_arn
-        }]
+        Rule="MoneyFlow_Morning_Check",
+        Targets=[{'Id': 'MorningTarget', 'Arn': func_arn}]
+    )
+
+    # --- Rule 2: Evening Scan (3:00 PM IST = 9:30 AM UTC) ---
+    events_client.put_rule(
+        Name="MoneyFlow_Evening_Scan",
+        ScheduleExpression="cron(30 9 ? * MON-FRI *)",
+        State="ENABLED",
+        Description="Start EC2 for MoneyFlow Trading Scan at 3:00 PM IST"
+    )
+    events_client.put_targets(
+        Rule="MoneyFlow_Evening_Scan",
+        Targets=[{'Id': 'EveningTarget', 'Arn': func_arn}]
     )
 
     # Allow EventBridge to invoke Lambda
     try:
         lambda_client.add_permission(
             FunctionName=func_arn.split(":")[-1],
-            StatementId='EventBridgeInvoke',
+            StatementId='EventBridgeInvokeDual',
             Action='lambda:InvokeFunction',
-            Principal='events.amazonaws.com',
-            SourceArn=rule_arn
+            Principal='events.amazonaws.com'
         )
     except Exception:
-        pass  # Permission may already exist
+        pass 
 
-    print("EventBridge → Lambda → EC2 pipeline configured!")
-    print("Schedule: Mon-Fri at 2:50 PM IST (9:20 AM UTC)")
+    print("Dual Schedulers Configured!")
+    print("1. Morning Check: 9:15 AM IST")
+    print("2. Evening Scan : 3:00 PM IST")
 
 
 def main():
@@ -162,11 +168,12 @@ def main():
 
     role_arn = create_lambda_role(iam)
     func_arn = create_lambda_function(lam, role_arn, args.instance_id, args.region)
-    create_eventbridge_rule(events, lam, func_arn)
+    create_eventbridge_rules(events, lam, func_arn)
 
-    print("\n✅ Setup complete! Your EC2 will auto-start at 2:50 PM IST every weekday.")
+    print("\nFull Automated Pipeline Configured!")
+    print("Your EC2 will now auto-start twice a day for Health Checks and Trading.")
     print("The bot will auto-shutdown after execution (~3:25 PM).")
-    print(f"Estimated monthly cost: ~₹20 (EC2 runs ~30 min/day)")
+    print(f"Estimated monthly cost: ~INR 20 (EC2 runs ~30 min/day)")
 
 
 if __name__ == "__main__":

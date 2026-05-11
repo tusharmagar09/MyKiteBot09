@@ -10,6 +10,10 @@ logger = logging.getLogger("orders")
 
 def place_buy(kite, symbol, qty, exchange="NSE"):
     """Place a MARKET BUY order. Returns order_id or None."""
+    import config
+    if config.DRY_RUN:
+        logger.info(f"[DRY RUN] Would BUY {symbol} x {qty}")
+        return f"DRY_BUY_{symbol}_{int(time.time())}"
     try:
         order_id = kite.place_order(
             variety=kite.VARIETY_REGULAR,
@@ -29,6 +33,10 @@ def place_buy(kite, symbol, qty, exchange="NSE"):
 
 def place_sell(kite, symbol, qty, exchange="NSE"):
     """Place a MARKET SELL order. Returns order_id or None."""
+    import config
+    if config.DRY_RUN:
+        logger.info(f"[DRY RUN] Would SELL {symbol} x {qty}")
+        return f"DRY_SELL_{symbol}_{int(time.time())}"
     try:
         order_id = kite.place_order(
             variety=kite.VARIETY_REGULAR,
@@ -58,6 +66,11 @@ def place_gtt_oco(kite, symbol, qty, sl_trigger, target_trigger, last_price,
     """
     if partial_qty is None:
         partial_qty = qty
+
+    import config
+    if config.DRY_RUN:
+        logger.info(f"[DRY RUN] Would place GTT OCO: {symbol} | SL={sl_trigger:.1f} Target={target_trigger:.1f}")
+        return f"DRY_GTT_OCO_{symbol}"
 
     try:
         # Kite GTT OCO requires trigger_values as [lower, upper]
@@ -102,6 +115,11 @@ def place_gtt_single(kite, symbol, qty, sl_trigger, last_price, exchange="NSE"):
     Used after partial exit is done — only trailing SL remains.
     Returns gtt_id or None.
     """
+    import config
+    if config.DRY_RUN:
+        logger.info(f"[DRY RUN] Would place GTT Single: {symbol} | SL={sl_trigger:.1f}")
+        return f"DRY_GTT_SL_{symbol}"
+
     try:
         gtt_id = kite.place_gtt(
             trigger_type=kite.GTT_TYPE_SINGLE,
@@ -175,7 +193,11 @@ def update_trailing_gtt(kite, trade, new_sl, current_price):
 
 
 def verify_order(kite, order_id, max_retries=3):
-    """Check if an order was successfully executed."""
+    """Check if an order was successfully executed. Handles Dry Run IDs."""
+    if str(order_id).startswith("DRY_"):
+        logger.info(f"[DRY RUN] Simulated order {order_id} verified as COMPLETE")
+        return {'status': 'COMPLETE', 'average_price': 0, 'tradingsymbol': order_id.split('_')[-1]}
+
     for attempt in range(max_retries):
         try:
             time.sleep(1)

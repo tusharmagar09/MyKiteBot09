@@ -14,9 +14,17 @@
 <body>
     <div class="container">
         <header>
-            <div class="logo-area">
-                <h1>MoneyFlow - Antigravity Quant</h1>
-                <p>Institutional Strategy Analytics • NIFTY 500 Universe</p>
+            <div class="logo-wrapper">
+                <div class="symbol-logo">
+                    <svg viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="10" stroke-width="2"/>
+                        <path d="M8 12l3 3 5-5" />
+                    </svg>
+                </div>
+                <div class="logo-area">
+                    <h1>MoneyFlow</h1>
+                    <p>Antigravity Quant</p>
+                </div>
             </div>
             <div class="status-badge" id="last-updated">
                 Initializing System...
@@ -25,9 +33,99 @@
 
         <!-- Metrics Overview -->
         <div class="metrics-grid" id="metrics-container">
-            <!-- Metrics will be injected by JS -->
             <div class="metric-card"><div class="metric-label">Loading...</div></div>
         </div>
+
+        <!-- Right Sidebar / Info Cards -->
+        <div class="sidebar">
+            <!-- GOAL TRACKER (NEW) -->
+            <div class="card goal-card">
+                <h3>🏆 Goal Tracker</h3>
+                <div class="goal-input-group">
+                    <label>Target:</label>
+                    <input type="number" id="goal-target" value="500000" onchange="updateGoal()">
+                </div>
+                <div class="progress-container">
+                    <div class="progress-bar" id="goal-progress-bar"></div>
+                </div>
+                <div class="goal-stats">
+                    <span id="goal-percent">0%</span>
+                    <span id="goal-remaining">Path to Wealth</span>
+                </div>
+            </div>
+
+            <div class="card status-card">
+                <h3>🛡️ System Health</h3>
+                <div class="status-item">
+                    <span>Broker:</span>
+                    <span class="status-badge live">Online</span>
+                </div>
+                <div class="status-item">
+                    <span>AWS EC2:</span>
+                    <span class="status-badge" id="ec2-status">Standby</span>
+                </div>
+                <div class="status-item">
+                    <span>Market:</span>
+                    <span id="market-status">Checking...</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // --- GOAL TRACKER LOGIC ---
+        let currentEquity = 0;
+
+        function initGoal() {
+            const savedGoal = localStorage.getItem('moneyflow_goal');
+            if (savedGoal) {
+                document.getElementById('goal-target').value = savedGoal;
+            }
+            updateGoal();
+        }
+
+        function updateGoal() {
+            const target = parseFloat(document.getElementById('goal-target').value) || 1;
+            localStorage.setItem('moneyflow_goal', target);
+            
+            const percent = Math.min((currentEquity / target) * 100, 100);
+            document.getElementById('goal-progress-bar').style.width = percent + '%';
+            document.getElementById('goal-percent').innerText = percent.toFixed(1) + '%';
+            
+            if (percent >= 100) {
+                document.querySelector('.goal-card').classList.add('goal-reached');
+                document.getElementById('goal-remaining').innerText = "GOAL REACHED! 🥂";
+            } else {
+                document.querySelector('.goal-card').classList.remove('goal-reached');
+                document.getElementById('goal-remaining').innerText = "On the way...";
+            }
+        }
+
+        async function fetchData() {
+            try {
+                // Update: Rounding and Currency formatting
+                const response = await fetch('project/state/portfolio_state.json');
+                const data = await response.json();
+                
+                // Calculate Total Equity
+                const positionsValue = data.positions.reduce((acc, p) => acc + (p.qty * p.entry_price), 0);
+                currentEquity = data.capital + positionsValue;
+
+                document.getElementById('equity-val').innerText = 'Rs. ' + Math.round(currentEquity).toLocaleString();
+                document.getElementById('cash-val').innerText = 'Rs. ' + Math.round(data.capital).toLocaleString();
+                document.getElementById('positions-count').innerText = data.positions.length + ' / 12';
+                
+                updateGoal(); // Refresh progress
+                
+                // --- Celebration Logic ---
+                // (Checking last trade in real app would trigger confetti)
+            } catch (e) { console.error("Data fetch error", e); }
+        }
+
+        initGoal();
+        setInterval(fetchData, 10000);
+        fetchData();
+    </script>
 
         <!-- Charts Section -->
         <div class="charts-grid">
@@ -55,8 +153,9 @@
                     <a href="reports/summary.csv" class="btn-download btn-outline" download>Summary</a>
                     <a href="reports/rejected_signals.csv" class="btn-download btn-outline" download>Rejections</a>
                 </div>
-                <div style="margin-top: 1rem; color: var(--text-secondary); font-size: 0.8rem;">
+                <div style="margin-top: 1rem; color: var(--text-secondary); font-size: 0.8rem; line-height: 1.6;">
                     <p>⚡ <strong>Strategy Engine:</strong> 12 Parallel Slots | RS leader replacement | Volume filter 1.5x</p>
+                    <p>📊 Institutional Strategy Analytics • NIFTY 500 Universe</p>
                 </div>
             </div>
         </div>

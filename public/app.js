@@ -72,9 +72,9 @@ function renderMetrics(summary, equity) {
         { label: 'Cagr', value: summary['CAGR %'] + '%', color: 'positive' },
         { label: 'Max drawdown', value: summary['Max Drawdown %'] + '%', color: 'negative' },
         { label: 'Sharpe ratio', value: summary['Sharpe Ratio'], color: '' },
-        { label: 'Capital deployed', value: '₹' + parseFloat(deployed).toLocaleString(), color: 'accent' },
-        { label: 'Cash balance', value: '₹' + parseFloat(cash).toLocaleString(), color: 'text-secondary' },
-        { label: 'Net liquidity', value: '₹' + parseFloat(summary['Ending Capital']).toLocaleString(), color: 'positive' }
+        { label: 'Capital deployed', value: '₹' + Math.round(deployed).toLocaleString(), color: 'accent' },
+        { label: 'Cash balance', value: '₹' + Math.round(cash).toLocaleString(), color: 'text-secondary' },
+        { label: 'Net liquidity', value: '₹' + Math.round(summary['Ending Capital']).toLocaleString(), color: 'positive' }
     ];
 
     metricsToShow.forEach(m => {
@@ -103,12 +103,12 @@ function renderEquityCharts(data) {
             datasets: [{
                 label: 'Equity (₹)',
                 data: values,
-                borderColor: '#00d2ff',
-                backgroundColor: 'rgba(0, 210, 255, 0.05)',
+                borderColor: '#00ffcc',
+                backgroundColor: 'rgba(0, 255, 204, 0.05)',
                 fill: true,
                 tension: 0.1,
-                pointRadius: values.length > 100 ? 0 : 2,
-                borderWidth: 2
+                pointRadius: 0,
+                borderWidth: 3
             }]
         },
         options: {
@@ -118,11 +118,11 @@ function renderEquityCharts(data) {
             plugins: { legend: { display: false } },
             scales: {
                 y: { 
-                    grid: { color: 'rgba(255,255,255,0.05)' }, 
+                    grid: { color: 'rgba(255,255,255,0.03)' }, 
                     min: 900000,
-                    ticks: { color: '#7d8590', font: { size: 10 }, callback: v => (v/100000).toFixed(1) + 'L' } 
+                    ticks: { color: '#94a3b8', font: { size: 9 }, callback: v => (v/100000).toFixed(1) + 'L' } 
                 },
-                x: { grid: { display: false }, ticks: { color: '#7d8590', font: { size: 10 }, autoSkip: true, maxTicksLimit: 12 } }
+                x: { grid: { display: false }, ticks: { color: '#94a3b8', font: { size: 9 }, autoSkip: true, maxTicksLimit: 6 } }
             }
         }
     });
@@ -143,12 +143,12 @@ function renderEquityCharts(data) {
             datasets: [{
                 label: 'Drawdown %',
                 data: drawdowns,
-                borderColor: '#da3633',
-                backgroundColor: 'rgba(218, 54, 51, 0.1)',
+                borderColor: '#ff4d4d',
+                backgroundColor: 'rgba(255, 77, 77, 0.05)',
                 fill: true,
                 tension: 0.1,
                 pointRadius: 0,
-                borderWidth: 1
+                borderWidth: 1.5
             }]
         },
         options: {
@@ -156,7 +156,7 @@ function renderEquityCharts(data) {
             maintainAspectRatio: false,
             plugins: { legend: { display: false } },
             scales: {
-                y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#7d8590', font: { size: 10 }, callback: v => v + '%' } },
+                y: { grid: { color: 'rgba(255,255,255,0.03)' }, ticks: { color: '#94a3b8', font: { size: 9 }, callback: v => v + '%' } },
                 x: { grid: { display: false }, ticks: { display: false } }
             }
         }
@@ -206,11 +206,11 @@ function renderTradesTable(trades) {
         row.innerHTML = `
             <td>${(t.exit_date || t.entry_date).split(' ')[0]}</td>
             <td><strong>${t.symbol}</strong></td>
-            <td>₹${parseFloat(invested).toLocaleString()}</td>
+            <td>₹${Math.round(invested).toLocaleString()}</td>
             <td>${qty}</td>
             <td>₹${entry.toFixed(1)}</td>
             <td>₹${exit.toFixed(1)}</td>
-            <td class="${pnlClass}">${pnl >= 0 ? '+' : ''}${pnl.toFixed(0)}</td>
+            <td class="${pnlClass}">${pnl >= 0 ? '+' : ''}${Math.round(pnl).toLocaleString()}</td>
             <td class="${pnlClass}">${pnlPct >= 0 ? '+' : ''}${pnlPct.toFixed(1)}%</td>
         `;
         tbody.appendChild(row);

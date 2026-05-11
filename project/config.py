@@ -30,6 +30,9 @@ BACKUP_DIR = os.path.join(BASE_DIR, "backups")
 for d in [DATA_DIR, REPORTS_DIR, LOG_DIR, BACKUP_DIR, os.path.join(BASE_DIR, "state")]:
     os.makedirs(d, exist_ok=True)
 
+# --- Trading Safety ---
+DRY_RUN = False  # LIVE MODE: Bot will place real orders on Zerodha!
+
 # --- Strategy Parameters ---
 INITIAL_CAPITAL = 1000000
 MAX_DEPLOYMENT = 1.0     # 100% capital deployed

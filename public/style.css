@@ -1,13 +1,13 @@
 :root {
-    --bg-color: #0b0e14;
-    --card-bg: rgba(23, 27, 34, 0.7);
-    --accent-color: #00d2ff;
-    --accent-gradient: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%);
-    --text-primary: #e6edf3;
-    --text-secondary: #7d8590;
-    --success: #238636;
-    --danger: #da3633;
-    --border: rgba(255, 255, 255, 0.1);
+    --bg-color: #080a0c;
+    --card-bg: rgba(20, 24, 28, 0.8);
+    --accent-color: #00ffcc;
+    --accent-gradient: linear-gradient(135deg, #00ffcc 0%, #0099ff 100%);
+    --text-primary: #f0f2f5;
+    --text-secondary: #94a3b8;
+    --success: #00ffcc;
+    --danger: #ff4d4d;
+    --border: rgba(255, 255, 255, 0.05);
 }
 
 * {
@@ -17,40 +17,143 @@
 }
 
 body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-family: 'Inter', -apple-system, sans-serif;
     background-color: var(--bg-color);
     color: var(--text-primary);
-    line-height: 1.6;
+    line-height: 1.5;
     overflow-x: hidden;
 }
 
 .container {
-    max-width: 1600px;
+    max-width: 1400px;
     margin: 0 auto;
-    padding: 1rem 1.5rem;
+    padding: 1rem;
 }
 
 header {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1.5rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.logo-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+/* Clean Symbolic Logo (TaskFlow Style) */
+.symbol-logo {
+    width: 42px;
+    height: 42px;
+    background: var(--accent-gradient);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 20px rgba(0, 255, 204, 0.4);
+}
+
+.symbol-logo svg {
+    width: 24px;
+    height: 24px;
+    fill: none;
+    stroke: #000; /* High contrast black stroke on neon green */
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
 }
 
 .logo-area h1 {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     background: var(--accent-gradient);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     font-weight: 800;
     letter-spacing: -0.5px;
+    text-transform: none; /* Revert from uppercase */
+    text-shadow: none; /* Revert from 3D */
 }
 
 .logo-area p {
     color: var(--text-secondary);
     font-size: 0.9rem;
+    font-weight: 600;
+}
+
+/* Goal Tracker Styling */
+.goal-card {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+    border: 1px solid rgba(0, 255, 157, 0.2);
+}
+
+.goal-input-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.goal-input-group input {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(0, 255, 157, 0.3);
+    color: var(--neon-green);
+    padding: 5px 10px;
+    border-radius: 4px;
+    width: 120px;
+    font-weight: bold;
+}
+
+.progress-container {
+    height: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    overflow: hidden;
+    margin: 10px 0;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--neon-green), #00ffcc);
+    box-shadow: 0 0 10px rgba(0, 255, 157, 0.5);
+    transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.goal-stats {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+}
+
+.goal-reached {
+    animation: goal-glow 2s infinite alternate;
+}
+
+@keyframes goal-glow {
+    from { box-shadow: 0 0 5px rgba(0, 255, 157, 0.2); }
+    to { box-shadow: 0 0 20px rgba(0, 255, 157, 0.6); }
+}
+
+/* Existing Card Layout Fixes */
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.status-badge {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    border: 1px solid var(--border);
 }
 
 /* Metrics Grid */
@@ -58,95 +161,104 @@ header {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     gap: 1rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
 }
 
 .metric-card {
     background: var(--card-bg);
-    backdrop-filter: blur(10px);
     border: 1px solid var(--border);
-    padding: 1rem;
-    border-radius: 12px;
-    transition: transform 0.2s ease, border-color 0.2s ease;
+    padding: 1.25rem 1rem;
+    border-radius: 20px;
     text-align: center;
-    min-width: 0;
-}
-
-.metric-card:hover {
-    transform: translateY(-4px);
-    border-color: var(--accent-color);
 }
 
 .metric-label {
     color: var(--text-secondary);
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     text-transform: uppercase;
     letter-spacing: 1px;
     margin-bottom: 0.5rem;
 }
 
 .metric-value {
-    font-size: 1.25rem;
+    font-size: 1.1rem;
     font-weight: 700;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 
-.positive { color: #3fb950; }
-.negative { color: #f85149; }
-
-/* Charts Area */
+/* Charts Grid */
 .charts-grid {
     display: grid;
     grid-template-columns: 1.5fr 1fr;
-    gap: 1rem;
+    gap: 1.5rem;
     margin-bottom: 1.5rem;
 }
 
 .chart-container {
     background: var(--card-bg);
     border: 1px solid var(--border);
-    padding: 1rem;
-    border-radius: 12px;
-    height: 300px;
+    padding: 1.5rem;
+    border-radius: 24px;
+    height: 350px;
 }
 
 .chart-header {
-    margin-bottom: 0.75rem;
+    margin-bottom: 1rem;
     font-weight: 600;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     color: var(--text-secondary);
     text-transform: capitalize;
 }
 
-/* Downloads Section */
-.downloads-area {
+/* Table Section */
+.table-container {
     background: var(--card-bg);
     border: 1px solid var(--border);
-    padding: 1.5rem;
-    border-radius: 16px;
+    border-radius: 24px;
+    overflow-x: auto;
+    margin-top: 1rem;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 800px;
+}
+
+th {
+    background: rgba(255, 255, 255, 0.03);
+    text-align: left;
+    padding: 1rem;
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+}
+
+td {
+    padding: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.85rem;
+}
+
+.positive { color: var(--success); }
+.negative { color: var(--danger); }
+
+/* Downloads Area */
+.downloads-area {
     display: flex;
-    gap: 1rem;
-    align-items: center;
+    gap: 0.75rem;
     flex-wrap: wrap;
+    margin-top: 1rem;
 }
 
 .btn-download {
     background: var(--accent-gradient);
-    color: white;
+    color: #000;
     border: none;
-    padding: 0.8rem 1.5rem;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
+    padding: 0.6rem 1.2rem;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 0.8rem;
     text-decoration: none;
-    font-size: 0.9rem;
-    transition: opacity 0.2s;
-}
-
-.btn-download:hover {
-    opacity: 0.9;
 }
 
 .btn-outline {
@@ -155,45 +267,10 @@ header {
     color: var(--text-primary);
 }
 
-.btn-outline:hover {
-    background: var(--border);
-}
-
-/* Table Area */
-.table-container {
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    overflow: hidden;
-    margin-top: 2rem;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-th {
-    background: rgba(255, 255, 255, 0.05);
-    text-align: left;
-    padding: 0.75rem;
-    color: var(--text-secondary);
-    font-size: 0.75rem;
-    text-transform: uppercase;
-}
-
-td {
-    padding: 0.75rem;
-    border-top: 1px solid var(--border);
-    font-size: 0.8rem;
-}
-
-tr:hover {
-    background: rgba(255, 255, 255, 0.02);
-}
-
-@media (max-width: 1024px) {
-    .charts-grid {
-        grid-template-columns: 1fr;
-    }
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+    .charts-grid { grid-template-columns: 1fr; }
+    .chart-container { height: 300px; }
+    header { flex-direction: column; align-items: flex-start; }
 }

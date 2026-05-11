@@ -6,8 +6,8 @@ Wants=network-online.target
 [Service]
 Type=simple
 User=ubuntu
-ExecStart=/usr/bin/python3 /home/ubuntu/project/live_bot.py
-WorkingDirectory=/home/ubuntu/project
+ExecStart=/usr/bin/python3 /home/ubuntu/MyKiteBot09/project/morning_check.py
+WorkingDirectory=/home/ubuntu/MyKiteBot09/project
 Restart=on-failure
 RestartSec=30
 StandardOutput=journal+console

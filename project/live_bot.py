@@ -217,7 +217,6 @@ def run(dry_run=False):
         if not is_open:
             logger.info(f"Market is closed. Reason: {reason}. Exiting.")
             notifications.send_holiday_msg(reason)
-            shutdown_ec2(dry_run)
             return
 
         # ── Step 3: Load State ──
@@ -228,20 +227,25 @@ def run(dry_run=False):
 
         # ── Step 3b: Check Actual Available Cash ──
         try:
-            margins = kite.margins("equity")
-            actual_cash = margins.get("available", {}).get("cash", 0)
-            logger.info(f"Broker cash available: ₹{actual_cash:,.2f} | Bot internal capital: ₹{capital:,.2f}")
+            margins = kite.margins()
+            equity_margins = margins.get("equity", {})
+            # Use 'live_balance' or 'net' as the source of truth
+            actual_cash = equity_margins.get("available", {}).get("live_balance", 
+                          equity_margins.get("net", 0))
             
-            # Use the LESSER of internal capital and actual cash
-            if actual_cash < capital:
-                logger.warning(f"Actual cash (₹{actual_cash:,.2f}) is less than bot capital (₹{capital:,.2f}). Using actual cash.")
+            # Sync internal capital with live broker balance
+            if actual_cash > 0:
+                if capital != actual_cash:
+                    logger.info(f"Syncing internal capital with broker: Rs.{capital:,.2f} -> Rs.{actual_cash:,.2f}")
                 capital = actual_cash
             
-            if actual_cash < 10000:
-                logger.warning(f"Very low cash balance: ₹{actual_cash:,.2f}. Entries will likely be skipped.")
-                notifications.send_error_alert(f"⚠️ Low cash balance: ₹{actual_cash:,.2f}. Bot may not be able to place orders.")
+            logger.info(f"Final Trading Capital: Rs.{capital:,.2f}")
+            
+            if capital < 10000:
+                logger.warning(f"Low cash balance: Rs.{capital:,.2f}. Some entries may be skipped.")
+                notifications.send_error_alert(f"⚠️ Low cash balance: Rs.{capital:,.2f}. Bot may not be able to place full orders.")
         except Exception as e:
-            logger.warning(f"Could not fetch margins: {e}. Using internal capital.")
+            logger.warning(f"Could not fetch margins: {e}. Falling back to saved state capital.")
 
         # ── Step 4: Reconcile with Broker ──
         logger.info("Step 4: Reconciling with Kite holdings...")
@@ -358,6 +362,19 @@ def run(dry_run=False):
             except Exception as e:
                 logger.warning(f"Could not update RS for {trade['symbol']}: {e}")
 
+        # ── LIQUIDITY REFRESH ──
+        if exits_today:
+            logger.info(f"Exits executed: {len(exits_today)}. Pausing 5s for margin settlement...")
+            time.sleep(5)
+            try:
+                margins = kite.margins()
+                equity_margins = margins.get("equity", {})
+                capital = equity_margins.get("available", {}).get("live_balance", 
+                          equity_margins.get("net", 0))
+                logger.info(f"Revised Available Margin after sales: Rs.{capital:,.2f}")
+            except Exception as e:
+                logger.warning(f"Could not refresh margins after sales: {e}")
+
         # ── Step 8: Scan for New Entries ──
         logger.info("Step 8: Scanning for entry signals...")
 
@@ -371,15 +388,25 @@ def run(dry_run=False):
 
         # Build candidate pool (Check technicals for ALL stocks first)
         candidate_pool = []
-        for symbol, df in price_data.items():
-            i = len(df) - 1
-            if strategy.check_entry(df, i, market_ok, True):
-                rs_score = rs.compute_rs_score(df, rs_df, i)
-                if rs_score is not None:
-                    candidate_pool.append({
-                        "symbol": symbol, "rs_score": rs_score,
-                        "price": df['close'].iloc[i], "atr": df['ATR'].iloc[i]
-                    })
+        diag_file = os.path.join(REPORTS_DIR, "diagnostic_scan.log")
+        
+        with open(diag_file, "a") as f:
+            f.write(f"\n--- SCAN START: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} ---\n")
+            for symbol, df in price_data.items():
+                i = len(df) - 1
+                overall, det = strategy.check_entry(df, i, market_ok, True, return_details=True)
+                rs_val = rs.compute_rs_score(df, rs_df, i)
+                
+                # Write to Diagnostic Log
+                if det:
+                    f.write(f"{symbol:10} | Cross:{int(det['cross'])} EMA:{int(det['ema'])} RSI:{int(det['rsi'])} High:{int(det['high'])} Vol:{int(det['vol'])} Mkt:{int(det['market'])} | RS:{rs_val if rs_val else 0:.2f} | {'PASS' if overall else 'FAIL'}\n")
+
+                if overall:
+                    if rs_val is not None:
+                        candidate_pool.append({
+                            "symbol": symbol, "rs_score": rs_val,
+                            "price": df['close'].iloc[i], "atr": df['ATR'].iloc[i]
+                        })
         
         # Rank by RS
         candidate_pool.sort(key=lambda x: x['rs_score'], reverse=True)
@@ -513,7 +540,7 @@ def run(dry_run=False):
         )
         
         # Update live performance log for dashboard
-        live_report_path = os.path.join(config.REPORT_DIR, "live_equity.csv")
+        live_report_path = os.path.join(config.REPORTS_DIR, "live_equity.csv")
         new_row = pd.DataFrame([{
             "date": current_date.strftime("%Y-%m-%d"),
             "equity": round(total_equity, 2),
@@ -561,7 +588,8 @@ def sync_reports_to_git():
     logger.info("Syncing reports to GitHub...")
     try:
         # Add only the reports folder
-        subprocess.run(["git", "add", "project/reports/*.csv"], check=True)
+        # Add reports, logs, and diagnostic files
+        subprocess.run(["git", "add", "project/reports/*.csv", "project/reports/*.log", "project/logs/*.log"], check=True)
         
         # Commit with today's date
         date_str = datetime.now().strftime("%Y-%m-%d")

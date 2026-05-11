@@ -1,0 +1,8 @@
+2026-05-08 14:41:44,875 [live_bot] ERROR: CRITICAL ERROR: module 'config' has no attribute 'REPORT_DIR'
+Traceback (most recent call last):
+  File "C:\Users\Ashish\.gemini\antigravity\scratch\MyKiteBot09\project\live_bot.py", line 516, in run
+    live_report_path = os.path.join(config.REPORT_DIR, "live_equity.csv")
+                                    ^^^^^^^^^^^^^^^^^
+AttributeError: module 'config' has no attribute 'REPORT_DIR'. Did you mean: 'REPORTS_DIR'?
+2026-05-08 15:02:22,268 [live_bot] ERROR: Shutdown command failed: [WinError 2] The system cannot find the file specified
+2026-05-08 15:06:06,370 [live_bot] ERROR: Shutdown command failed: [WinError 2] The system cannot find the file specified
