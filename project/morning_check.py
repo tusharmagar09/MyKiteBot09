@@ -68,7 +68,7 @@ def run_check():
             f"Bot is ready for the 3:00 PM Momentum Scan."
         )
         
-        notifications.send_telegram_msg(report)
+        notifications.send_custom_msg(report)
         logger.info(f"Morning report sent. Status: {status}")
 
     except Exception as e:

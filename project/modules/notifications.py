@@ -114,3 +114,7 @@ def send_shutdown_msg():
     """Notify clean shutdown."""
     msg = "✅ <b>Bot Shutdown</b>\nAll operations complete. EC2 stopping."
     _send_message(msg)
+
+def send_custom_msg(msg):
+    """Public helper for generic notifications."""
+    _send_message(msg)
