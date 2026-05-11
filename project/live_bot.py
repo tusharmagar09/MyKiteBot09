@@ -370,12 +370,17 @@ def run(dry_run=False):
         # ── LIQUIDITY REFRESH ──
         if exits_today:
             logger.info(f"Exits executed: {len(exits_today)}. Pausing 5s for margin settlement...")
+            import time
             time.sleep(5)
             try:
                 margins = kite.margins()
                 equity_margins = margins.get("equity", {})
-                capital = equity_margins.get("available", {}).get("live_balance", 
-                          equity_margins.get("net", 0))
+                
+                # Robust detection: use live_balance if available, fallback to net
+                live_bal = equity_margins.get("available", {}).get("live_balance", 0)
+                net_bal = equity_margins.get("net", 0)
+                capital = live_bal if live_bal > 0 else net_bal
+                
                 logger.info(f"Revised Available Margin after sales: Rs.{capital:,.2f}")
             except Exception as e:
                 logger.warning(f"Could not refresh margins after sales: {e}")
