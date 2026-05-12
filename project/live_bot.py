@@ -99,15 +99,8 @@ def check_market_status(kite):
                     return True, "Market is open"
                 else:
                     return False, f"Market Holiday (RELIANCE last trade: {stock_trade_time.strftime('%Y-%m-%d')})"
-        except Exception:
-            pass
             
         return False, "Could not verify live market activity (Holiday suspected)"
-                return True, "Market is open"
-        except Exception:
-            pass
-        
-        return False, "Public holiday"
 
     except Exception as e:
         logger.warning(f"Market status check failed: {e}. Assuming market is open.")

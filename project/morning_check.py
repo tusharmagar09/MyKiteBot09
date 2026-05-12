@@ -38,8 +38,8 @@ def run_check():
         holdings = kite.holdings()
         invested_value = sum(h['quantity'] * h['last_price'] for h in holdings)
         
-        portfolio_state = state.load_state()
-        active_positions = len(portfolio_state)
+        portfolio, capital = state.load_state()
+        active_positions = len(portfolio)
         
         # 4. Analyze Health (Alert only on Zero/Near-Zero Balance)
         status = "✅ HEALTHY"
@@ -61,7 +61,6 @@ def run_check():
             f"<b>Status:</b> {status}\n"
             f"<b>User:</b> {user_name}\n"
             f"<b>Available Trading Cash:</b> Rs.{available_margin:,.2f}\n"
-            f"<b>Manual Portfolio Value:</b> Rs.{invested_value:,.2f}\n"
             f"<b>Bot Active Positions:</b> {active_positions}/12\n"
             f"{warning_msg}\n"
             f"----------------------------------\n"

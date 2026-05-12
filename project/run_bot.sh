@@ -12,6 +12,12 @@ echo "Current IST Time: $IST_HOUR:$IST_MINUTE"
 PROJECT_DIR="/home/ubuntu/MyKiteBot09"
 cd $PROJECT_DIR
 
+# --- STARTUP PING ---
+TOKEN="8648384035:AAH983gcyVl0_PkVtHIpn9vBvjvdkI89ycs"
+CHAT_ID="935395132"
+MESSAGE="⚡ [MoneyFlow] Server Waking up for $IST_HOUR:$IST_MINUTE check..."
+curl -s -X POST "https://api.telegram.org/bot$TOKEN/sendMessage" -d "chat_id=$CHAT_ID" -d "text=$MESSAGE" > /dev/null
+
 # 3. Synchronize with latest logic
 echo "Updating code from GitHub..."
 git pull
