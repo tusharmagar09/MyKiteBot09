@@ -2,9 +2,9 @@
 # MoneyFlow — Dynamic Startup Orchestrator
 # This script is called automatically when the EC2 starts.
 
-# 1. Get current hour in IST (UTC+5.5)
-IST_HOUR=$(date -u -d "+5 hours 30 minutes" +%H)
-IST_MINUTE=$(date -u -d "+5 hours 30 minutes" +%M)
+# 1. Get current hour in IST (Server timezone is now Asia/Kolkata)
+IST_HOUR=$(date +%H)
+IST_MINUTE=$(date +%M)
 
 echo "Current IST Time: $IST_HOUR:$IST_MINUTE"
 
