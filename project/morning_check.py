@@ -41,6 +41,22 @@ def run_check():
         portfolio, capital = state.load_state()
         active_positions = len(portfolio)
         
+        # Calculate MoneyFlow Portfolio Value
+        moneyflow_portfolio_value = capital
+        if portfolio:
+            try:
+                symbols = [f"NSE:{t['symbol']}" for t in portfolio]
+                quotes = kite.quote(symbols)
+                open_value = sum(
+                    t['qty'] * quotes.get(f"NSE:{t['symbol']}", {}).get('last_price', t.get('entry_price', 0))
+                    for t in portfolio
+                )
+                moneyflow_portfolio_value += open_value
+            except Exception as e:
+                logger.warning(f"Could not fetch live quotes for portfolio valuation: {e}")
+                open_value = sum(t['qty'] * t.get('entry_price', 0) for t in portfolio)
+                moneyflow_portfolio_value += open_value
+
         # 4. Analyze Health (Alert only on Zero/Near-Zero Balance)
         status = "✅ HEALTHY"
         warning_msg = ""
@@ -61,6 +77,7 @@ def run_check():
             f"<b>Status:</b> {status}\n"
             f"<b>User:</b> {user_name}\n"
             f"<b>Available Trading Cash:</b> Rs.{available_margin:,.2f}\n"
+            f"<b>MoneyFlow Portfolio Value:</b> Rs.{moneyflow_portfolio_value:,.2f}\n"
             f"<b>Bot Active Positions:</b> {active_positions}/12\n"
             f"{warning_msg}\n"
             f"----------------------------------\n"
