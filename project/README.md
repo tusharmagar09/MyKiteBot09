@@ -105,7 +105,35 @@ cp backups/state_YYYY-MM-DD.json state/portfolio_state.json
 
 ## Monitoring Checklist (Daily)
 
-- [ ] Check Telegram for daily summary
-- [ ] Verify no error alerts received
-- [ ] Spot-check one position in Kite Console vs state file
-- [ ] Confirm EC2 auto-stopped (check AWS Console)
+- [ ] Check Telegram at **9:15 AM** for the "Startup Ping" and Morning Health Report.
+- [ ] Check Telegram at **3:00 PM** for the "Startup Ping" and Evening Scan Summary.
+- [ ] Verify **MoneyFlow Portfolio Value** and active positions (max 12).
+- [ ] Confirm EC2 auto-stopped after operations (check AWS Console).
+
+---
+
+## Daily Execution Pipeline
+
+The bot is designed to run completely autonomously. It operates on a **2-part daily cycle**, driven by an AWS EventBridge trigger and the `run_bot.sh` script:
+
+1. **Morning Pulse (9:15 AM IST):**
+   - Server wakes up via Lambda trigger.
+   - Sends a **"⚡ Server Waking up..."** ping to Telegram.
+   - Synchronizes code from GitHub.
+   - Runs `morning_check.py`.
+   - Validates Kite API login, available margin, and calculates the **MoneyFlow Portfolio Value**.
+   - Sends the "Morning Report" to Telegram.
+   - Safely shuts down the server.
+
+2. **Evening Trading Scan (3:00 PM IST):**
+   - Server wakes up via Lambda trigger.
+   - Sends a **"⚡ Server Waking up..."** ping to Telegram.
+   - Synchronizes code from GitHub.
+   - Runs `live_bot.py`.
+   - Executes the "Triple-Lock" Holiday check. If market is closed, it aborts.
+   - Exits existing positions (if conditions met).
+   - Pauses for 5 seconds to let margins settle.
+   - Enters new positions (up to 12 max) using remaining cash.
+   - Places GTT orders for Target and Stop Loss.
+   - Sends the "Daily Trading Summary" to Telegram.
+   - Safely shuts down the server.
