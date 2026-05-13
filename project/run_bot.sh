@@ -66,4 +66,5 @@ else
 fi
 
 echo "Orchestration complete. Shutting down server to save costs and reset for next run..."
-# sudo shutdown -h now
+sudo shutdown -h now
+
