@@ -130,14 +130,18 @@ def reconcile(kite, portfolio):
 
         local_holdings = {t['symbol']: t['qty'] for t in portfolio}
 
-        # Check for discrepancies
-        all_symbols = set(list(kite_holdings.keys()) + list(local_holdings.keys()))
+        # Check for discrepancies ONLY for stocks the bot is currently tracking.
+        # This prevents the bot from throwing errors about the user's manual portfolio holdings.
+        all_symbols = set(local_holdings.keys())
 
         discrepancies = []
         for symbol in all_symbols:
             kite_qty = kite_holdings.get(symbol, 0)
             local_qty = local_holdings.get(symbol, 0)
-            if kite_qty != local_qty:
+            
+            # Alert only if Kite has LESS than what the bot expects.
+            # If Kite has MORE, the user may have manually bought extra shares.
+            if kite_qty < local_qty:
                 discrepancies.append({
                     "symbol": symbol,
                     "kite_qty": kite_qty,
