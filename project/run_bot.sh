@@ -70,4 +70,4 @@ SHUTDOWN_MSG="🛑 [MoneyFlow] Server Shutting Down. Operations complete."
 curl -s -X POST "https://api.telegram.org/bot$TOKEN/sendMessage" -d "chat_id=$CHAT_ID" -d "text=$SHUTDOWN_MSG" > /dev/null
 
 echo "Orchestration complete. Shutting down server to save costs and reset for next run..."
-sudo shutdown -h now
+# sudo shutdown -h now
