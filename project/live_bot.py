@@ -580,8 +580,7 @@ def shutdown_ec2(dry_run=False):
     # Sync reports to GitHub so they are available locally
     sync_reports_to_git()
     
-    logger.info("Shutting down EC2 instance...")
-    notifications.send_shutdown_msg()
+    logger.info("Shutting down EC2 instance (handled by shell script)...")
 
     try:
         subprocess.run(["sudo", "shutdown", "-h", "now"], check=False)
