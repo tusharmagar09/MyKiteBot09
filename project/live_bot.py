@@ -70,8 +70,8 @@ def check_market_status(kite):
     market_open = now.replace(hour=9, minute=0, second=0, microsecond=0)
     market_close = now.replace(hour=15, minute=30, second=0, microsecond=0)
     
-    if now < market_open or now > market_close:
-        return False, f"After market hours (IST: {now.strftime('%H:%M')})"
+    # if now < market_open or now > market_close:
+    #     return False, f"After market hours (IST: {now.strftime('%H:%M')})"
     
     # Market hours on a weekday — verify with Kite API for holidays
     try:
