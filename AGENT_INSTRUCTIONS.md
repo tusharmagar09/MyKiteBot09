@@ -18,5 +18,9 @@ To ensure the integrity and safety of the MoneyFlow trading system, ALL AI agent
 *   **Action:** Before signing off, always verify that the EC2 instance is in a **Stopped** state (unless explicitly asked otherwise).
 *   **Why:** To prevent unnecessary AWS costs and ensure a fresh startup for the next scheduled run.
 
+## 5. Mandatory Dry-Run Testing
+*   **Action:** Before committing any changes to the execution scripts (`run_bot.sh` or `live_bot.py`), the agent MUST run a manual test on the EC2 server (or a `--dry-run`) to ensure no syntax or permission errors were introduced.
+*   **Why:** To catch silent failures and syntax errors before the automated morning/evening schedule triggers.
+
 ---
 *Follow these rules to ensure a professional, production-grade environment.*

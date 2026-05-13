@@ -23,16 +23,46 @@ echo "Updating code from GitHub..."
 git pull
 cd project
 
-# 3. Determine which module to run
+# 4. Determine which module to run with Retry Logic
+run_with_retries() {
+    local script=$1
+    local max_attempts=3
+    local attempt=1
+    local wait_time=120
+
+    while [ $attempt -le $max_attempts ]; do
+        echo "Attempt $attempt of $max_attempts for $script..."
+        python3 $script
+        local exit_code=$?
+
+        if [ $exit_code -eq 0 ]; then
+            echo "$script executed successfully."
+            return 0
+        else
+            echo "$script failed with exit code $exit_code."
+            if [ $attempt -lt $max_attempts ]; then
+                echo "Waiting $wait_time seconds before retrying..."
+                sleep $wait_time
+            fi
+        fi
+        attempt=$((attempt + 1))
+    done
+
+    echo "All $max_attempts attempts failed for $script."
+    local err_msg="🚨 [MoneyFlow] CRITICAL: $script failed after $max_attempts attempts! Server shutting down."
+    curl -s -X POST "https://api.telegram.org/bot$TOKEN/sendMessage" -d "chat_id=$CHAT_ID" -d "text=$err_msg" > /dev/null
+    return 1
+}
+
 if [ "$IST_HOUR" -eq 9 ]; then
     echo "Starting Morning Health Check..."
-    python3 morning_check.py
+    run_with_retries morning_check.py
 elif [ "$IST_HOUR" -eq 15 ]; then
     echo "Starting Evening Trading Scan..."
-    python3 live_bot.py
+    run_with_retries live_bot.py
 else
     echo "Woke up at unscheduled time ($IST_HOUR IST). Running safety check..."
-    python3 morning_check.py
+    run_with_retries morning_check.py
 fi
 
 echo "Orchestration complete. Shutting down server to save costs and reset for next run..."
