@@ -402,7 +402,9 @@ def run(dry_run=False):
 
         # Build candidate pool (Check technicals for ALL stocks first)
         candidate_pool = []
-        diag_file = os.path.join(config.REPORTS_DIR, "diagnostic_scan.log")
+        today_str = datetime.now().strftime("%Y-%m-%d")
+        diag_file = os.path.join(config.REPORTS_DIR, f"diagnostic_scan_{today_str}.log")
+
         
         with open(diag_file, "a") as f:
             f.write(f"\n--- SCAN START: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} ---\n")
