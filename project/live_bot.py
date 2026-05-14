@@ -61,7 +61,7 @@ def check_market_status(kite):
     today = now.date()
     
     logger.info(f"Current IST time: {now.strftime('%Y-%m-%d %H:%M:%S IST')}")
-    return True, "Forced Open for manual run"
+
 
 
     
