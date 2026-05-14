@@ -61,17 +61,25 @@ def check_market_status(kite):
     today = now.date()
     
     logger.info(f"Current IST time: {now.strftime('%Y-%m-%d %H:%M:%S IST')}")
+    return True, "Forced Open for manual run"
+
+
     
     # Check if weekend
     if today.weekday() >= 5:  # 5=Saturday, 6=Sunday
         return False, "Weekend"
     
     # Check if within market hours (9:00 AM - 3:30 PM IST)
+    # Check if within market hours (9:00 AM - 3:30 PM IST)
     market_open = now.replace(hour=9, minute=0, second=0, microsecond=0)
     market_close = now.replace(hour=15, minute=30, second=0, microsecond=0)
     
     if now < market_open or now > market_close:
         return False, f"After market hours (IST: {now.strftime('%H:%M')})"
+
+
+
+
 
     
     # Market hours on a weekday — verify with Kite API for holidays
@@ -614,3 +622,5 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     run(dry_run=args.dry_run)
+
+
